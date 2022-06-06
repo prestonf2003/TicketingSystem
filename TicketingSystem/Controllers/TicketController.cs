@@ -11,8 +11,9 @@ namespace TicketingSystem.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TicketController : Controller
-    { TicketDBContext db = new TicketDBContext();
+    public class TicketController : ControllerBase
+    {
+        TicketDBContext db = new TicketDBContext();
 
         [HttpGet("ShowAllTickets")]
         public List<Ticket> ShowAllTickets()
