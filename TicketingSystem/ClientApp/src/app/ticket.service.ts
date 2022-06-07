@@ -9,6 +9,8 @@ import { Ticket } from './ticket';
 })
 export class TicketService {
 urlRoot: string;
+
+
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
   }
@@ -22,6 +24,10 @@ urlRoot: string;
     }
 
     return this.http.get<Ticket[]>(this.urlRoot + "ticket/SearchTicketsByTitle/" + searchTerm)
+  }
+
+  searchTicketById(id: number): Observable<Ticket>{
+    return this.http.get<Ticket>(this.urlRoot + "ticket/GetTicketById/" + id)
   }
 
   createTicket(t: Ticket): void {
