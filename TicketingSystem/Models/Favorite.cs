@@ -5,6 +5,7 @@ namespace TicketingSystem.Models
 {
     public partial class Favorite
     {
+        public int PkId { get; set; }
         public string? UserId { get; set; }
         public int? Id { get; set; }
 

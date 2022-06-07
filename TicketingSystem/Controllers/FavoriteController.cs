@@ -13,22 +13,22 @@ namespace TicketingSystem.Controllers
     [Route("[controller]")]
     public class FavoriteController : Controller
     {
-
         TicketDBContext db = new TicketDBContext();
 
-        [HttpGet("ShowAllFavorites")]
+        [HttpGet("ShowAllFavorites/")]
         public List<Favorite> ShowAllFavorites()
         {
             return db.Favorites.ToList();
         }
 
-        /*[HttpPut("CreateNewFavorite")]
+        [HttpPut("CreateNewFavorite/")]
         public string CreateFavorite(Favorite f)
         {
             db.Favorites.Add(f);
             db.SaveChanges();
             return $"{f.Id} was added to the database";
         }
+
         [HttpDelete("DeleteFavorite/{id}")]
         public string DeleteFavorite(int id)
         {
@@ -36,7 +36,6 @@ namespace TicketingSystem.Controllers
             db.Favorites.Remove(f);
             db.SaveChanges();
             return $"{f.Id} was removed from the database";
-        }*/
-
+        }
     }
 }
