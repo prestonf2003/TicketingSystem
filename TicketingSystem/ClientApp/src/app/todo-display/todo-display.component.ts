@@ -3,7 +3,7 @@ import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
 import { FormsModule } from '@angular/forms';
 import { Favorite } from '../favorite';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-display',
@@ -21,13 +21,13 @@ export class TodoDisplayComponent implements OnInit {
   grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
 
-  constructor( private ticketService: TicketService ) {
+  constructor( private ticketService: TicketService, private router: Router, ) {
     this.showAllTickets();
     this.showAllFavorites();
   }
 
   showAllTickets(): void {
-    this.ticketService.showAllTickets().subscribe((response) => 
+    this.ticketService.showAllTickets().subscribe((response) => {
       this.tickets = response; // Populates both our arrays initially.
       this.searchedTickets = response; // We filter tickets to get this and use this as the array to display.
     });
