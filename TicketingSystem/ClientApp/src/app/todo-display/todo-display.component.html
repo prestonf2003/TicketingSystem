@@ -1,0 +1,25 @@
+<input type="text" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
+<br>
+
+<input type="text" [(ngModel)]="userID" placeholder="Username">
+<br>
+<button (click)="login()">Login</button>
+<br>
+<p *ngIf="currentUser !== ''">
+    Logged in as: {{currentUser}}
+</p>
+
+
+
+<div *ngFor="let ticket of searchedTickets">
+    <p>
+        Ticket ID: {{ticket.id}}  - Title: {{ticket.title}} 
+        <button *ngIf="currentUser !== ''">Favorite</button>
+        <br>
+
+        Issue: {{ticket.problemDescription}}
+        <br>
+
+        Opened by: {{ticket.openedUserId}} - Resolved by: {{ticket.resolvedUserId}}
+    </p>
+</div>

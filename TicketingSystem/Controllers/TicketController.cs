@@ -21,6 +21,12 @@ namespace TicketingSystem.Controllers
             return db.Tickets.ToList();
         }
 
+        [HttpGet("SearchTicketsByTitle/{searchTerm}")]
+        public List<Ticket> SearchTickets(string searchTerm)
+        {
+            return db.Tickets.Where(ticket => ticket.Title.Contains(searchTerm)).ToList();
+        }
+
         [HttpPut("CreateNewTicket")]
         public string CreateTicket(Ticket t)
         {
