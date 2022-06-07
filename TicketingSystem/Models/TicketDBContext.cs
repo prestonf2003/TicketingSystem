@@ -32,7 +32,10 @@ namespace TicketingSystem.Models
         {
             modelBuilder.Entity<Favorite>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.PkId)
+                    .HasName("PK__Favorite__40A359C384517DE7");
+
+                entity.Property(e => e.PkId).HasColumnName("pkId");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -41,10 +44,10 @@ namespace TicketingSystem.Models
                     .HasColumnName("UserID");
 
                 entity.HasOne(d => d.IdNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Favorites__id__25869641");
+                    .HasConstraintName("FK__Favorites__id__5FB337D6");
             });
 
             modelBuilder.Entity<Ticket>(entity =>

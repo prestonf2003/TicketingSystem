@@ -1,25 +1,35 @@
 <input type="text" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
 <br>
 
-<input type="text" [(ngModel)]="userID" placeholder="Username">
+<p *ngIf = "currentUser === ''">
+    <input type="text" [(ngModel)]="userID" placeholder="Username">
+    <br>
+    <button (click)="login()">Login</button>
+</p>
 <br>
-<button (click)="login()">Login</button>
-<br>
+
 <p *ngIf="currentUser !== ''">
     Logged in as: {{currentUser}}
+    <button (click)="logout()">Logout</button>
+    <br>
+
+    Show only favorites: <input type="checkbox" id="favSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
+    <br>
+    Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
+    
 </p>
-
-
 
 <div *ngFor="let ticket of searchedTickets">
     <p>
-        Ticket ID: {{ticket.id}}  - Title: {{ticket.title}} 
-        <button *ngIf="currentUser !== ''">Favorite</button>
+        Ticket ID: {{ticket.id}}  - Title: {{ticket.title}} Open status: {{ticket.isOpen}}
+        <button *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
+        <button *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
         <br>
 
         Issue: {{ticket.problemDescription}}
         <br>
 
-        Opened by: {{ticket.openedUserId}} - Resolved by: {{ticket.resolvedUserId}}
+        Opened by: {{ticket.openedUserId}} - {{ticket.resolvedUserId}}
+        
     </p>
 </div>
