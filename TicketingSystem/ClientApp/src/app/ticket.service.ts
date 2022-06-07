@@ -16,6 +16,14 @@ urlRoot: string;
     return this.http.get<Ticket[]>(this.urlRoot + "ticket/ShowAllTickets")
   }
 
+  searchTicketsByTitle(searchTerm: string): Observable <Ticket[]> {
+    if (searchTerm === "") {
+      return this.showAllTickets(); // The URL doesn't like null searches and search bar doesn't work right without this.
+    }
+
+    return this.http.get<Ticket[]>(this.urlRoot + "ticket/SearchTicketsByTitle/" + searchTerm)
+  }
+
   createTicket(t: Ticket): void {
     this.http.put(this.urlRoot + "ticket/CreateNewTicket" ,t)
   }
