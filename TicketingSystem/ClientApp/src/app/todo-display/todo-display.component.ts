@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo-display',
@@ -14,8 +15,10 @@ export class TodoDisplayComponent implements OnInit {
   searchTerm: string = "";
   userID: string = "";
   currentUser: string = "";
+  grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
-  constructor( private ticketService: TicketService ) {
+  
+  constructor( private ticketService: TicketService, private router: Router ) {
     ticketService.showAllTickets().subscribe((response) => {
       this.tickets = response; // Populates both our arrays initially.
       this.searchedTickets = response; // We filter tickets to get this and use this as the array to display.
@@ -36,4 +39,12 @@ export class TodoDisplayComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getTicket(t: Ticket){
+    this.grabbedTicket = t;
+    //Object.assign(this.ticketService.grabbedTicket, t);
+    console.log(this.grabbedTicket);
+    this.router.navigateByUrl(`/ticket-view/${t.id}`);
+    
+  }
 }
+
