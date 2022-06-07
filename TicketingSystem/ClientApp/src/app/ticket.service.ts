@@ -9,6 +9,8 @@ import { Ticket } from './ticket';
 })
 export class TicketService {
 urlRoot: string;
+
+
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
   }
@@ -22,6 +24,10 @@ urlRoot: string;
     }
 
     return this.http.get<Ticket[]>(this.urlRoot + "ticket/SearchTicketsByTitle/" + searchTerm)
+  }
+
+  searchTicketById(id: number): Observable<Ticket>{
+    return this.http.get<Ticket>(this.urlRoot + "ticket/GetTicketById/" + id)
   }
 
   createTicket(t: Ticket): void {
@@ -40,12 +46,12 @@ urlRoot: string;
     return this.http.get<Favorite[]>(this.urlRoot + "favorite/ShowAllFavorites")
   }
 
-  createFavorite(f: Favorite): void {
-    this.http.put(this.urlRoot + "favorite/CreateNewFavorite" ,f)
+  createFavorite(f: Favorite): Observable<Favorite> {
+    return this.http.put<Favorite>(this.urlRoot + "favorite/CreateNewFavorite/", f);
   }
 
-  deleteFavorite(id: number): void{
-    this.http.delete(this.urlRoot + "favorite/DeleteFavorite/" + id)
+  deleteFavorite(id: number): Observable<Favorite> {
+    return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id);
   }
 
 }

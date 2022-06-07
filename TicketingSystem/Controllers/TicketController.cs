@@ -21,6 +21,12 @@ namespace TicketingSystem.Controllers
             return db.Tickets.ToList();
         }
 
+        [HttpGet("GetTicketById/{id}")]
+        public Ticket GetTicketByID(int id)
+        {
+            return db.Tickets.Where(t => t.Id == id).First();
+        }
+
         [HttpGet("SearchTicketsByTitle/{searchTerm}")]
         public List<Ticket> SearchTickets(string searchTerm)
         {
