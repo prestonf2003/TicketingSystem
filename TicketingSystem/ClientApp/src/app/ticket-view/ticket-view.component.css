@@ -1,0 +1,8 @@
+.Ticket{
+border: solid;
+text-align: center;
+margin: auto;
+box-sizing: border-box;
+width: 50%;
+border: 5px solid black;
+}
