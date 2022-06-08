@@ -61,7 +61,7 @@ namespace TicketingSystem.Controllers
             t.ProblemDescription = updatedTicket.ProblemDescription;
             t.OpenedUserId = updatedTicket.OpenedUserId;
             t.IsOpen = updatedTicket.IsOpen;
-            t.IsFavorited = updatedTicket.IsFavorited;
+        
 
             db.Tickets.Update(t);
             db.SaveChanges();
