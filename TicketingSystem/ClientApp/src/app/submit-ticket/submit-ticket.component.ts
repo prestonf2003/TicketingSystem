@@ -20,6 +20,8 @@ export class SubmitTicketComponent implements OnInit {
     let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", false, true, this.problemDescription);
 
     this.ticketService.createTicket(newTicket).subscribe();
+    this.title = "";
+    this.problemDescription = "";
   }
 
   login(): void {
