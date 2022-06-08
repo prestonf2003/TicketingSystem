@@ -4,9 +4,11 @@
 <p *ngIf = "currentUser === ''">
     <input type="text" [(ngModel)]="userID" placeholder="Username">
     <br>
+
     <button (click)="login()">Login</button>
+    <br>
 </p>
-<br>
+
 
 <span *ngIf="currentUser !== ''">
     Logged in as: {{currentUser}}
@@ -35,6 +37,6 @@ Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (cl
         </span> 
         <span *ngIf="!ticket.isOpen">
             Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
-        </span> 
+        </span>
     </p>
 </div>

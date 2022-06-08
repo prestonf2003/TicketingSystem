@@ -30,15 +30,16 @@ urlRoot: string;
     return this.http.get<Ticket>(this.urlRoot + "ticket/GetTicketById/" + id);
   }
 
-  createTicket(t: Ticket): void {
-    this.http.put(this.urlRoot + "ticket/CreateNewTicket" ,t);
+  createTicket(t: Ticket): Observable<Ticket> {
+    console.log(t.id);
+    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" ,t);
   }
 
   deleteTicket(id: number): Observable<Ticket> {
     return this.http.delete<Ticket>(this.urlRoot + "ticket/DeleteTicket/" + id);
   }
 
-  updateTicket(id: number, t: Ticket) {
+  updateTicket(id: number, t: Ticket): Observable<Ticket> {
     return this.http.post<Ticket>(this.urlRoot + "ticket/UpdateTicket/" + id ,t);
   }
 
