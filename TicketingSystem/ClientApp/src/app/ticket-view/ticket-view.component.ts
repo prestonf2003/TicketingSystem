@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TicketViewComponent implements OnInit {
 ticketID: number = 0;
-focusTicket = new Ticket (0,"","","",false,true,"");
+focusTicket = new Ticket (0,"","","","",true,"");
   constructor(private ticketService: TicketService) {
     
     this.ticketService.searchTicketById(this.getId()).subscribe((response) => {

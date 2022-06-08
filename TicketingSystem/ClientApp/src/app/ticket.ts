@@ -3,17 +3,17 @@ export class Ticket{
     openedUserId: string;
     title: string;
     resolvedUserId: string;
-    isFavorited: boolean;
+    resolution: string;
     isOpen: boolean;
     problemDescription: string;
 
     constructor(id: number, openedUserID: string, title: string, 
-        resolvedUserId: string, isFavorited: boolean, isOpen: boolean, problemDescription: string){
+        resolvedUserId: string, resolution: string, isOpen: boolean, problemDescription: string){
             this.id = id;
             this.openedUserId = openedUserID;
             this.title = title;
             this.resolvedUserId = resolvedUserId;
-            this.isFavorited = isFavorited;
+            this.resolution = resolution;
             this.isOpen = isOpen;
             this.problemDescription = problemDescription;
         }

@@ -17,7 +17,7 @@ export class TodoDisplayComponent implements OnInit {
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
   searchTerm: string = "";
   userID: string = "";
-  grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
+  grabbedTicket: Ticket = new Ticket (0,"","","","",false,"");
   
 
   constructor( private ticketService: TicketService, private router: Router, ) {
@@ -39,7 +39,7 @@ export class TodoDisplayComponent implements OnInit {
   }
 
   createFavorite(ticketID: number): void {
-    this.newFavorite = new Favorite (undefined!, this.currentUser, ticketID);
+    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
     
     this.showAllFavorites(); // We need to do this method call before and after subscribing for some reason.
 
