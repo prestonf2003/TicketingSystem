@@ -15,7 +15,10 @@ export class TicketViewComponent implements OnInit {
 ticketID: number = 0;
 focusTicket = new Ticket (0,"","","",false,true,"");
   constructor(private ticketService: TicketService) {
-   
+    
+    this.ticketService.searchTicketById(this.getId()).subscribe((response) => {
+      this.focusTicket = response;
+    });
    }
 
   ngOnInit(): void {

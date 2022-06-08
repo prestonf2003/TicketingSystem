@@ -1,4 +1,10 @@
-<p>ticket-view works!</p>
-<button (click)="searchTicketsByID()">test</button>
-<p>{{focusTicket.title}}</p>
 
+<div class="Ticket">
+    <h3>Subject: {{focusTicket.title}}</h3>
+    <br>
+    <p>Opened by: {{focusTicket.openedUserId}}</p>
+    <p>Issue Description: {{focusTicket.problemDescription}}</p>
+    <p *ngIf="focusTicket.isOpen !== true">Ticket status: Resolved</p>
+    <p *ngIf="focusTicket.isOpen === true">Ticket status: Open</p>
+    <p *ngIf="focusTicket.isOpen !== true">This ticket was resolved by {{focusTicket.resolvedUserId}}</p>
+</div>
