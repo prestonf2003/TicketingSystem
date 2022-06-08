@@ -18,7 +18,8 @@ export class TodoDisplayComponent implements OnInit {
   userID: string = "";
   grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
-  constructor( public ticketService: TicketService, private router: Router ) {
+
+  constructor( public ticketService: TicketService, private router: Router, ) {
     this.showAllTickets();
     this.showAllFavorites();
   }

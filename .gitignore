@@ -403,5 +403,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-*.pak
+*.pack
 *.old

@@ -33,5 +33,6 @@ export class SubmitTicketComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
 }
