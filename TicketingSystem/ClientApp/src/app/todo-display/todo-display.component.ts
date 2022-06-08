@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class TodoDisplayComponent implements OnInit {
   tickets: Ticket[] = [];
+  currentUser: string = this.ticketService.currentUser;
   searchedTickets: Ticket[] = [];
   favorites: Favorite[] = [];
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
@@ -19,7 +20,7 @@ export class TodoDisplayComponent implements OnInit {
   grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
 
-  constructor( public ticketService: TicketService, private router: Router, ) {
+  constructor( private ticketService: TicketService, private router: Router, ) {
     this.showAllTickets();
     this.showAllFavorites();
   }
@@ -38,7 +39,7 @@ export class TodoDisplayComponent implements OnInit {
   }
 
   createFavorite(ticketID: number): void {
-    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
+    this.newFavorite = new Favorite (undefined!, this.currentUser, ticketID);
     
     this.showAllFavorites(); // We need to do this method call before and after subscribing for some reason.
 
@@ -51,7 +52,7 @@ export class TodoDisplayComponent implements OnInit {
     this.showAllFavorites();
 
     this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.ticketService.currentUser) {
+      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
         this.ticketService.deleteFavorite(favorite.pkId).subscribe();
       }
     });
@@ -64,7 +65,7 @@ export class TodoDisplayComponent implements OnInit {
     
 
     this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.ticketService.currentUser) {
+      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
         foundFav = favorite;
       }
     });
@@ -119,18 +120,20 @@ export class TodoDisplayComponent implements OnInit {
   login(): void {
     this.userID = this.userID.toLowerCase();
     this.ticketService.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
+    this.currentUser = this.ticketService.currentUser;
     this.userID = "";
   }
 
   logout(): void {
     this.ticketService.currentUser = "";
+    this.currentUser = this.ticketService.currentUser;
   }
 
   swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
     ticket.isOpen = openStatus;
     
     if (openStatus === false) {
-      ticket.resolvedUserId = this.ticketService.currentUser;
+      ticket.resolvedUserId = this.currentUser;
     }
     else {
       ticket.resolvedUserId = "";

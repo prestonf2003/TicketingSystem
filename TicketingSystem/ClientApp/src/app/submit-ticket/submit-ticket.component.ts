@@ -9,10 +9,11 @@ import { TicketService } from '../ticket.service';
 })
 export class SubmitTicketComponent implements OnInit {
   userID: string = "";
+  currentUser: string = this.ticketService.currentUser;
   title: string = "";
   problemDescription: string = "";
   
-  constructor( public ticketService: TicketService ) { }
+  constructor( private ticketService: TicketService ) { }
 
   createTicket(): void {
     let newTicket: Ticket = new Ticket(undefined!, this.ticketService.currentUser, this.title, "", false, true, this.problemDescription);
@@ -25,11 +26,13 @@ export class SubmitTicketComponent implements OnInit {
   login(): void {
     this.userID = this.userID.toLowerCase();
     this.ticketService.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
+    this.currentUser = this.ticketService.currentUser;
     this.userID = "";
   }
 
   logout(): void {
     this.ticketService.currentUser = "";
+    this.currentUser = this.ticketService.currentUser;
   }
 
   ngOnInit(): void {
