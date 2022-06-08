@@ -58,11 +58,11 @@ namespace TicketingSystem.Controllers
 
             t.Title = updatedTicket.Title;
             t.ResolvedUserId = updatedTicket.ResolvedUserId;
+            t.Resolution = updatedTicket.Resolution;
             t.ProblemDescription = updatedTicket.ProblemDescription;
             t.OpenedUserId = updatedTicket.OpenedUserId;
             t.IsOpen = updatedTicket.IsOpen;
             t.Resolution = updatedTicket.Resolution;
-        
 
             db.Tickets.Update(t);
             db.SaveChanges();
