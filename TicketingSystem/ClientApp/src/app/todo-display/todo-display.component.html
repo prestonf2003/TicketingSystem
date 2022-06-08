@@ -1,7 +1,7 @@
 <input type="text" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
 <br>
 
-<p *ngIf = "currentUser === ''">
+<p *ngIf = "ticketService.currentUser === ''">
     <input type="text" [(ngModel)]="userID" placeholder="Username">
     <br>
 
@@ -10,8 +10,8 @@
 </p>
 
 
-<span *ngIf="currentUser !== ''">
-    Logged in as: {{currentUser}}
+<span *ngIf="ticketService.currentUser !== ''">
+    Logged in as: {{ticketService.currentUser}}
     <button (click)="logout()">Logout</button>    
     <br>
 
@@ -23,9 +23,9 @@ Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (cl
 <div *ngFor="let ticket of searchedTickets">
     <p>
         Ticket ID: {{ticket.id}}  - Title: {{ticket.title}} <button (click)="getTicket(ticket)" ng-click="grabbedTicket" >View Ticket</button>
-        <button *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
-        <button *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
-        <button *ngIf="currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
+        <button *ngIf="ticketService.currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
+        <button *ngIf="ticketService.currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
+        <button *ngIf="ticketService.currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
         <br>
 
         Issue: {{ticket.problemDescription}}
@@ -33,10 +33,10 @@ Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (cl
 
         Opened by: {{ticket.openedUserId}} -  
         <span *ngIf="ticket.isOpen">
-            Open ticket <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, false)">Close ticket</button>
+            Open ticket <button *ngIf="ticketService.currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, false)">Close ticket</button>
         </span> 
         <span *ngIf="!ticket.isOpen">
-            Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
+            Resolved by: {{ticket.resolvedUserId}} <button *ngIf="ticketService.currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
         </span>
     </p>
 </div>

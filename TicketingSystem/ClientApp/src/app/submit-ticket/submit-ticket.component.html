@@ -1,6 +1,6 @@
 <h1>New ticket form</h1>
 
-<p *ngIf = "currentUser === ''">
+<p *ngIf = "ticketService.currentUser === ''">
     <input type="text" placeholder="Username" [(ngModel)]="userID" >
     <br>
 
@@ -8,8 +8,8 @@
     <br>
 </p>
 
-<p *ngIf="currentUser !== ''">
-    Logged in as: {{currentUser}}
+<p *ngIf="ticketService.currentUser !== ''">
+    Logged in as: {{ticketService.currentUser}}
     <button (click)="logout()">Logout</button>    
     <br>
 

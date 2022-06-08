@@ -8,8 +8,8 @@ import { Ticket } from './ticket';
   providedIn: 'root'
 })
 export class TicketService {
-urlRoot: string;
-
+  urlRoot: string;
+  currentUser: string = ""; 
 
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;

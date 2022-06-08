@@ -4,7 +4,6 @@ import { TicketService } from '../ticket.service';
 import { Favorite } from '../favorite';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-todo-display',
   templateUrl: './todo-display.component.html',
@@ -17,11 +16,9 @@ export class TodoDisplayComponent implements OnInit {
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
   searchTerm: string = "";
   userID: string = "";
-  currentUser: string = "";
   grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
-
-  constructor( private ticketService: TicketService, private router: Router ) {
+  constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
   }
@@ -40,7 +37,7 @@ export class TodoDisplayComponent implements OnInit {
   }
 
   createFavorite(ticketID: number): void {
-    this.newFavorite = new Favorite (undefined!, this.currentUser, ticketID);
+    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
     
     this.showAllFavorites(); // We need to do this method call before and after subscribing for some reason.
 
@@ -53,7 +50,7 @@ export class TodoDisplayComponent implements OnInit {
     this.showAllFavorites();
 
     this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
+      if (favorite.id === ticketID && favorite.userId === this.ticketService.currentUser) {
         this.ticketService.deleteFavorite(favorite.pkId).subscribe();
       }
     });
@@ -66,7 +63,7 @@ export class TodoDisplayComponent implements OnInit {
     
 
     this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
+      if (favorite.id === ticketID && favorite.userId === this.ticketService.currentUser) {
         foundFav = favorite;
       }
     });
@@ -120,19 +117,19 @@ export class TodoDisplayComponent implements OnInit {
 
   login(): void {
     this.userID = this.userID.toLowerCase();
-    this.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
+    this.ticketService.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
     this.userID = "";
   }
 
   logout(): void {
-    this.currentUser = "";
+    this.ticketService.currentUser = "";
   }
 
   swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
     ticket.isOpen = openStatus;
     
     if (openStatus === false) {
-      ticket.resolvedUserId = this.currentUser;
+      ticket.resolvedUserId = this.ticketService.currentUser;
     }
     else {
       ticket.resolvedUserId = "";
@@ -159,4 +156,3 @@ export class TodoDisplayComponent implements OnInit {
     this.router.navigateByUrl(`/ticket-view/${t.id}`);
   }
 }
-
