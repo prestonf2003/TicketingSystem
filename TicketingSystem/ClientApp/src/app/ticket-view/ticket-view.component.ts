@@ -17,6 +17,7 @@ ticketID: number = 0;
 userID: string = "";
 focusTicket = new Ticket (0,"","","","",true,"");
 currentUser: string = this.Todo.currentUser;
+resolution: string ="";
   constructor(private ticketService: TicketService, private Todo: TodoDisplayComponent) {
     
     this.ticketService.searchTicketById(this.getId()).subscribe((response) => {
@@ -66,5 +67,12 @@ searchTicketsByID(): void {
     console.log(this.currentUser);
     return this.ticketID;
 
+
+  }
+  updateResolution(id: number, ticket: Ticket){
+    ticket.resolution =this.resolution;
+    ticket.resolvedUserId =this.Todo.currentUser;
+    ticket.isOpen=false;
+    this.ticketService.updateTicket(id, ticket).subscribe();
   }
 }
