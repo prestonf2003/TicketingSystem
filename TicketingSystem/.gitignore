@@ -82,6 +82,8 @@ ipch/
 *.vsp
 *.vspx
 *.sap
+*.pack
+*.old
 
 # TFS 2012 Local Workspace
 $tf/
