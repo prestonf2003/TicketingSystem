@@ -23,27 +23,27 @@ urlRoot: string;
       return this.showAllTickets(); // The URL doesn't like null searches and search bar doesn't work right without this.
     }
 
-    return this.http.get<Ticket[]>(this.urlRoot + "ticket/SearchTicketsByTitle/" + searchTerm)
+    return this.http.get<Ticket[]>(this.urlRoot + "ticket/SearchTicketsByTitle/" + searchTerm);
   }
 
   searchTicketById(id: number): Observable<Ticket>{
-    return this.http.get<Ticket>(this.urlRoot + "ticket/GetTicketById/" + id)
+    return this.http.get<Ticket>(this.urlRoot + "ticket/GetTicketById/" + id);
   }
 
   createTicket(t: Ticket): void {
-    this.http.put(this.urlRoot + "ticket/CreateNewTicket" ,t)
+    this.http.put(this.urlRoot + "ticket/CreateNewTicket" ,t);
   }
 
-  deleteTicket(id: number): void{
-    this.http.delete(this.urlRoot + "ticket/DeleteTicket/" + id)
+  deleteTicket(id: number): Observable<Ticket> {
+    return this.http.delete<Ticket>(this.urlRoot + "ticket/DeleteTicket/" + id);
   }
 
-  updateTicket(id: number, t: Ticket){
-    return this.http.post<Ticket>(this.urlRoot + "ticket/UpdateTicket/" + id ,t)
+  updateTicket(id: number, t: Ticket) {
+    return this.http.post<Ticket>(this.urlRoot + "ticket/UpdateTicket/" + id ,t);
   }
 
   showFavorites(): Observable <Favorite[]> {
-    return this.http.get<Favorite[]>(this.urlRoot + "favorite/ShowAllFavorites")
+    return this.http.get<Favorite[]>(this.urlRoot + "favorite/ShowAllFavorites");
   }
 
   createFavorite(f: Favorite): Observable<Favorite> {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
-import { FormsModule } from '@angular/forms';
 import { Favorite } from '../favorite';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,13 +21,13 @@ export class TodoDisplayComponent implements OnInit {
   grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
   
 
-  constructor( private ticketService: TicketService ) {
+  constructor( private ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
   }
 
   showAllTickets(): void {
-    this.ticketService.showAllTickets().subscribe((response) => 
+    this.ticketService.showAllTickets().subscribe((response) => {
       this.tickets = response; // Populates both our arrays initially.
       this.searchedTickets = response; // We filter tickets to get this and use this as the array to display.
     });
@@ -78,17 +78,17 @@ export class TodoDisplayComponent implements OnInit {
   }
 
   searchTicketsByTitle(searchTerm: string): void {
-    let searchByFaves: any = document.getElementById("favSearchCheckBox");
+    let searchByFaves: any = document.getElementById("favSearchCheckBox") ?? false; // This starts hidden, so we default to false to avoid errors before user login.
     let searchByStatus: any = document.getElementById("openStatusSearchCheckBox");
     
     this.ticketService.searchTicketsByTitle(searchTerm).subscribe((response) => {
       this.searchedTickets = response;
       
-      if (searchByFaves.checked === true) {
-        this.searchFavoritesByTitle();
+      if (searchByFaves.checked) { //searchByFaves.checked is a bool
+        this.searchForFavorites();
       }
   
-      if (searchByStatus.checked === true) {
+      if (searchByStatus.checked) {
         this.searchByOpenStatus();
       }
     });
@@ -106,7 +106,7 @@ export class TodoDisplayComponent implements OnInit {
     this.searchedTickets = newSearched;
   }
 
-  searchFavoritesByTitle(): void {
+  searchForFavorites(): void {
     let newSearched: Ticket[] = [];
 
     this.searchedTickets.forEach((ticket) => {
@@ -119,12 +119,34 @@ export class TodoDisplayComponent implements OnInit {
   }
 
   login(): void {
-    this.currentUser = this.userID.toLowerCase();
+    this.userID = this.userID.toLowerCase();
+    this.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
     this.userID = "";
   }
 
   logout(): void {
     this.currentUser = "";
+  }
+
+  swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
+    ticket.isOpen = openStatus;
+    
+    if (openStatus === false) {
+      ticket.resolvedUserId = this.currentUser;
+    }
+    else {
+      ticket.resolvedUserId = "";
+    }
+    
+    this.ticketService.updateTicket(id, ticket).subscribe();
+  }
+
+  deleteTicket(id: number) {
+    this.searchTicketsByTitle(this.searchTerm);
+
+    this.ticketService.deleteTicket(id).subscribe();
+    
+    this.searchTicketsByTitle(this.searchTerm);
   }
   
   ngOnInit(): void {
@@ -135,7 +157,6 @@ export class TodoDisplayComponent implements OnInit {
     //Object.assign(this.ticketService.grabbedTicket, t);
     console.log(this.grabbedTicket);
     this.router.navigateByUrl(`/ticket-view/${t.id}`);
-    
   }
 }
 
