@@ -40,24 +40,18 @@ export class TodoDisplayComponent implements OnInit {
 
   createFavorite(ticketID: number): void {
     this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
-    
-    this.showAllFavorites(); // We need to do this method call before and after subscribing for some reason.
-
+    console.log("added at " + this.favorites.indexOf(this.newFavorite));
+    this.favorites.push(this.newFavorite);
     this.ticketService.createFavorite(this.newFavorite).subscribe();
-
-    this.showAllFavorites();
   }
-
   deleteFavorite(ticketID: number): void {
-    this.showAllFavorites();
-
     this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
+      if (favorite.id === ticketID && favorite.userId === this.ticketService.currentUser) {
+        console.log("deleted at " + this.favorites.indexOf(favorite));
+        this.favorites.splice(this.favorites.indexOf(favorite), 1);
         this.ticketService.deleteFavorite(favorite.pkId).subscribe();
       }
     });
-    
-    this.showAllFavorites();
   }
 
   isFavorited(ticketID: number): boolean {
@@ -158,5 +152,15 @@ export class TodoDisplayComponent implements OnInit {
     //Object.assign(this.ticketService.grabbedTicket, t);
     console.log(this.grabbedTicket);
     this.router.navigateByUrl(`/ticket-view/${t.id}`);
+  }
+  resolveTicket(id: number, ticket: Ticket, resolution: string): void {
+    
+
+    if(ticket.isOpen === true){
+      this.ticketService.addResolution(id, ticket, resolution).subscribe();
+    }
+    else{
+      ticket.resolution = "This Ticket has not been resolved yet.";
+    }
   }
 }
