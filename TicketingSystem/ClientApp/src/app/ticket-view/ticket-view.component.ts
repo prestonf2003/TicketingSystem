@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TicketViewComponent implements OnInit {
 ticketID: number = 0;
+currentUser: string = this.ticketService.currentUser;
 focusTicket = new Ticket (0,"","","","",true,"");
   constructor(private ticketService: TicketService) {
     
