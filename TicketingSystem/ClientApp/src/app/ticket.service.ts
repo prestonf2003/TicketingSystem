@@ -54,5 +54,8 @@ export class TicketService {
   deleteFavorite(id: number): Observable<Favorite> {
     return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id);
   }
+  addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> {
+    return this.http.post<Ticket>(this.urlRoot + "ticket/AddResolution/" + id, ticket);
+  }
 
 }

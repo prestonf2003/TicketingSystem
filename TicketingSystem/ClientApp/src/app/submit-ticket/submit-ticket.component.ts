@@ -13,7 +13,9 @@ export class SubmitTicketComponent implements OnInit {
   title: string = "";
   problemDescription: string = "";
   
-  constructor( private ticketService: TicketService ) { }
+  constructor( private ticketService: TicketService ) { 
+   
+  }
 
   createTicket(): void {
     let newTicket: Ticket = new Ticket(undefined!, this.ticketService.currentUser, this.title, "", "", true, this.problemDescription);
@@ -21,6 +23,7 @@ export class SubmitTicketComponent implements OnInit {
     this.ticketService.createTicket(newTicket).subscribe();
     this.title = "";
     this.problemDescription = "";
+    console.log(this.currentUser);
   }
 
   login(): void {
@@ -38,4 +41,5 @@ export class SubmitTicketComponent implements OnInit {
   ngOnInit(): void {
     
   }
+  
 }

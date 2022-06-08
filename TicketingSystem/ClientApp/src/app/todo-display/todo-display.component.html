@@ -1,7 +1,7 @@
 <input type="text" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
 <br>
 
-<p *ngIf = "currentUser === ''">
+<p *ngIf="currentUser === ''">
     <input type="text" [(ngModel)]="userID" placeholder="Username">
     <br>
 
@@ -17,24 +17,20 @@
 
     Show only favorites: <input type="checkbox" id="favSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
     <br>
-</span>
-Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
+</span> Show only open tickets: <input type="checkbox" id="openStatusSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
+
 
 <div *ngFor="let ticket of searchedTickets">
     <p>
-        Ticket ID: {{ticket.id}}  - Title: {{ticket.title}} <button (click)="getTicket(ticket)" ng-click="grabbedTicket" >View Ticket</button>
+        Ticket ID: {{ticket.id}} - Title: {{ticket.title}} <button (click)="getTicket(ticket)" ng-click="grabbedTicket">View Ticket</button>
         <button *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
         <button *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
         <button *ngIf="currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
-        <br>
-
-        Issue: {{ticket.problemDescription}}
-        <br>
-
-        Opened by: {{ticket.openedUserId}} -  
+        <br> Issue: {{ticket.problemDescription}}
+        <br> Opened by: {{ticket.openedUserId}} -
         <span *ngIf="ticket.isOpen">
             Open ticket <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, false)">Close ticket</button>
-        </span> 
+        </span>
         <span *ngIf="!ticket.isOpen">
             Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
         </span>
