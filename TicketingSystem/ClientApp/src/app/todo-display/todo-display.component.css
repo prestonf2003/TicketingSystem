@@ -1,3 +1,14 @@
 div {
     border: solid;
 }
+
+.buttonStyle {
+    transition-duration: 0.4s;
+    border-radius: 8px;
+  }
+  
+  .buttonStyle:hover {
+    background-color: #43484f; /* Green */
+    color: white;
+    border-radius: 8px;
+  }
