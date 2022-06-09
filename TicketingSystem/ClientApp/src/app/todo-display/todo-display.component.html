@@ -1,18 +1,17 @@
-<input type="text" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<input type="text" name="search" placeholder="Search tickets by title" [(ngModel)]="searchTerm" (keyup)="searchTicketsByTitle(searchTerm)">
 <br>
 
 <p *ngIf="currentUser === ''">
-    <input type="text" [(ngModel)]="userID" placeholder="Username">
-    <br>
-
-    <button (click)="ticketService.login(userID); ngOnInit();">Login</button>
+    <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
+    <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit();">Login</button>
     <br>
 </p>
 
-
 <span *ngIf="currentUser !== ''">
     Logged in as: {{currentUser}}
-    <button (click)="ticketService.logout(); ngOnInit()">Logout</button>    
+    <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>    
     <br>
 
     Show only favorites: <input type="checkbox" id="favSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
@@ -22,17 +21,17 @@
 
 <div *ngFor="let ticket of searchedTickets">
     <p>
-        Ticket ID: {{ticket.id}} - Title: {{ticket.title}} <button (click)="getTicket(ticket)" ng-click="grabbedTicket">View Ticket</button>
-        <button *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
-        <button *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
-        <button *ngIf="currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
+        Ticket ID: {{ticket.id}} - Title: {{ticket.title}} <button class="buttonStyle" (click)="getTicket(ticket)" ng-click="grabbedTicket">View Ticket</button>
+        <button class="buttonStyle" *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
+        <button class="buttonStyle" *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
+        <button class="buttonStyle" *ngIf="currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
         <br> Issue: {{ticket.problemDescription}}
         <br> Opened by: {{ticket.openedUserId}} -
         <span *ngIf="ticket.isOpen">
             Open ticket
         </span>
         <span *ngIf="!ticket.isOpen">
-            Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="ticketService.swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
+            Resolved by: {{ticket.resolvedUserId}} <button class="buttonStyle" *ngIf="currentUser !== ''" (click)="ticketService.swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
         </span>
     </p>
 </div>

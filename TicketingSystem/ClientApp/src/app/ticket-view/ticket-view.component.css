@@ -1,0 +1,25 @@
+.buttonStyle {
+  transition-duration: 0.4s;
+  border-radius: 8px;
+}
+  
+.buttonStyle:hover {
+  background-color: #43484f; /* Green */
+  color: white;
+  border-radius: 8px;
+}
+
+input[type=text] {
+  width: 18%;
+  height: 2%;
+  border: 2px solid #ccc;
+  background-color: white;
+  border-radius: 4px;
+  padding: 2px 0px 2px 5px;
+  font-size: 16px;
+}
+
+input[name=resolution]:focus {
+  transition: width 0.4s ease-in-out;
+  width: 80%;
+}
