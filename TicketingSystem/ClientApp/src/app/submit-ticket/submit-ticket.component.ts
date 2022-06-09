@@ -18,7 +18,7 @@ export class SubmitTicketComponent implements OnInit {
   createTicket(): void {
     let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", "", true, this.problemDescription);
 
-    this.ticketService.createTicket(newTicket).subscribe(Response => this.router.navigateByUrl(``));
+    this.ticketService.createTicket(newTicket).subscribe( () => this.router.navigateByUrl(``));
     this.title = "";
     this.problemDescription = "";
     
