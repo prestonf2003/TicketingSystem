@@ -34,8 +34,7 @@ import { SubmitTicketComponent } from './submit-ticket/submit-ticket.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'todo-display', component: TodoDisplayComponent },
       { path: 'submit-ticket', component: SubmitTicketComponent },
-      { path: 'ticket-view/:id', component: TicketViewComponent },
-      
+      { path: 'ticket-view', component: TicketViewComponent }
     ])
   ],
   providers: [],

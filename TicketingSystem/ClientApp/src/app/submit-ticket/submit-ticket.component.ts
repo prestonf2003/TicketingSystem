@@ -13,33 +13,18 @@ export class SubmitTicketComponent implements OnInit {
   title: string = "";
   problemDescription: string = "";
   
-  constructor( private ticketService: TicketService ) { 
-   
-  }
+  constructor( public ticketService: TicketService ) { }
 
   createTicket(): void {
-    let newTicket: Ticket = new Ticket(undefined!, this.ticketService.currentUser, this.title, "", "", true, this.problemDescription);
+    let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", "", true, this.problemDescription);
 
     this.ticketService.createTicket(newTicket).subscribe();
     this.title = "";
     this.problemDescription = "";
-    console.log(this.currentUser);
   }
 
-  login(): void {
-    this.userID = this.userID.toLowerCase();
-    this.ticketService.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
-    this.currentUser = this.ticketService.currentUser;
+  ngOnInit(): void { // We call this to update page when user clicks login/out.
+    this.currentUser= this.ticketService.currentUser;
     this.userID = "";
   }
-
-  logout(): void {
-    this.ticketService.currentUser = "";
-    this.currentUser = this.ticketService.currentUser;
-  }
-
-  ngOnInit(): void {
-    
-  }
-  
 }
