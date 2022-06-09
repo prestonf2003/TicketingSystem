@@ -4,13 +4,13 @@
     <input type="text" placeholder="Username" [(ngModel)]="userID" >
     <br>
 
-    <button (click)="login()">Login</button>
+    <button (click)="ticketService.login(userID); ngOnInit()">Login</button>
     <br>
 </p>
 
 <p *ngIf="currentUser !== ''">
     Logged in as: {{currentUser}}
-    <button (click)="logout()">Logout</button>    
+    <button (click)="ticketService.logout(); ngOnInit()">Logout</button>    
     <br>
 
     Both inputs must be filled out to submit a new ticket.

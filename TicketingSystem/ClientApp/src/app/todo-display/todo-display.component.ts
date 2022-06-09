@@ -19,7 +19,7 @@ export class TodoDisplayComponent implements OnInit {
   grabbedTicket: Ticket = new Ticket (0,"","","","",false,"");
   
 
-  constructor( private ticketService: TicketService, private router: Router, ) {
+  constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
    }
@@ -102,18 +102,6 @@ export class TodoDisplayComponent implements OnInit {
     this.searchedTickets = newSearched;
   }
 
-  login(): void {
-    this.userID = this.userID.toLowerCase();
-    this.ticketService.currentUser = this.userID[0].toUpperCase() + this.userID.slice(1);
-    this.currentUser = this.ticketService.currentUser;
-    this.userID = "";
-  }
-
-  logout(): void {
-    this.ticketService.currentUser = "";
-    this.currentUser = this.ticketService.currentUser;
-  }
-
   swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
     ticket.isOpen = openStatus;
     
@@ -137,14 +125,14 @@ export class TodoDisplayComponent implements OnInit {
     });
   }
   
-  ngOnInit(): void {
+  ngOnInit(): void { // We call this to update page when user clicks login.
+    this.currentUser= this.ticketService.currentUser;
+    this.userID = "";
   }
 
-  getTicket(t: Ticket){
-    this.grabbedTicket = t;
-    //Object.assign(this.ticketService.grabbedTicket, t);
-    console.log(this.grabbedTicket);
-    this.router.navigateByUrl(`/ticket-view/${t.id}`);
+  getTicket(ticket: Ticket){
+    this.ticketService.ticket = ticket;
+    this.router.navigateByUrl(`/ticket-view`);
   }
   
   resolveTicket(id: number, ticket: Ticket, resolution: string): void {

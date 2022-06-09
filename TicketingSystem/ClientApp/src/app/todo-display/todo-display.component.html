@@ -5,14 +5,14 @@
     <input type="text" [(ngModel)]="userID" placeholder="Username">
     <br>
 
-    <button (click)="login()">Login</button>
+    <button (click)="ticketService.login(userID); ngOnInit();">Login</button>
     <br>
 </p>
 
 
 <span *ngIf="currentUser !== ''">
     Logged in as: {{currentUser}}
-    <button (click)="logout()">Logout</button>    
+    <button (click)="ticketService.logout(); ngOnInit()">Logout</button>    
     <br>
 
     Show only favorites: <input type="checkbox" id="favSearchCheckBox" (click)="searchTicketsByTitle(searchTerm)">
@@ -29,10 +29,10 @@
         <br> Issue: {{ticket.problemDescription}}
         <br> Opened by: {{ticket.openedUserId}} -
         <span *ngIf="ticket.isOpen">
-            Open ticket <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, false)">Close ticket</button>
+            Open ticket
         </span>
         <span *ngIf="!ticket.isOpen">
-            Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
+            Resolved by: {{ticket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="ticketService.swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
         </span>
     </p>
 </div>

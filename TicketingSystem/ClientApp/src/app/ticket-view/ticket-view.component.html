@@ -2,14 +2,14 @@
     <input type="text" [(ngModel)]="userID" placeholder="Username">
     <br>
 
-    <button (click)="login()">Login</button>
+    <button (click)="ticketService.login(userID); ngOnInit();">Login</button>
     <br>
 </p>
 
 <ng-template #notLoggedIn>Please login to view ticket details.</ng-template>
 <span *ngIf="currentUser !== ''; else notLoggedIn">
     Logged in as: {{currentUser}}
-    <button (click)="logout()">Logout</button>    
+    <button (click)="ticketService.logout(); ngOnInit()">Logout</button>    
     <br>
 <div class="Ticket">
     <h3>Subject: {{focusTicket.title}}</h3>
@@ -19,14 +19,19 @@
     <p *ngIf="focusTicket.isOpen !== true">Ticket status: Resolved</p>
     <p *ngIf="focusTicket.isOpen === true">Ticket status: Open</p>
     <p *ngIf="focusTicket.isOpen !== true">This ticket was resolved by {{focusTicket.resolvedUserId}}</p>
-    {{currentUser}}
+    <p *ngIf="!focusTicket.isOpen">Resolution steps: {{focusTicket.resolution}}</p>
+    
     <span *ngIf="focusTicket.isOpen">
         
-        Open ticket <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(focusTicket.id, focusTicket, false)">Close ticket</button>
+       
     </span>
 <span *ngIf="!focusTicket.isOpen">
-        Resolved by: {{focusTicket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
+        Resolved by: {{focusTicket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
     </span>
-</div>
 
 <ng-template #notLoggedIn>Please login to view ticket details.</ng-template>
+    <p *ngIf="focusTicket.isOpen">Please enter your resolution steps.</p>
+    <input *ngIf="focusTicket.isOpen" type ="text" [(ngModel)]="resolution">
+    <button *ngIf="focusTicket.isOpen && resolution.trim().length === 0" disabled>Resolve</button>
+    <button *ngIf="focusTicket.isOpen && resolution.trim().length !== 0" (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
+</div>

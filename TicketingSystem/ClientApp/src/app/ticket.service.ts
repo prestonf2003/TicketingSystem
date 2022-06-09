@@ -14,7 +14,8 @@ export class TicketService {
   requestOptions: Object = {
     headers: this.headers,
     responseType: 'text'
-  }
+  };
+  ticket!: Ticket;
 
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
@@ -53,16 +54,36 @@ export class TicketService {
   }
 
   createFavorite(f: Favorite): Observable<Favorite> {
-    
-
     return this.http.put<Favorite>(this.urlRoot + "favorite/CreateNewFavorite/", f, this.requestOptions);
   }
 
   deleteFavorite(id: number): Observable<Favorite> {
     return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id, this.requestOptions);
   }
+
   addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> {
     return this.http.post<Ticket>(this.urlRoot + "ticket/AddResolution/" + id, ticket);
   }
 
+  swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
+    ticket.isOpen = openStatus;
+    
+    if (openStatus === false) {
+      ticket.resolvedUserId = this.currentUser;
+    }
+    else {
+      ticket.resolvedUserId = "";
+    }
+    
+    this.updateTicket(id, ticket).subscribe();
+  }
+
+  login(userID: string): void {
+    userID = userID.toLowerCase();
+    this.currentUser = userID[0].toUpperCase() + userID.slice(1);
+  }
+
+  logout(): void {
+    this.currentUser = "";
+  }
 }
