@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
-import { FormsModule } from '@angular/forms';
 import { Favorite } from '../favorite';
 import { Router } from '@angular/router';
 
@@ -11,84 +10,73 @@ import { Router } from '@angular/router';
   styleUrls: ['./todo-display.component.css']
 })
 export class TodoDisplayComponent implements OnInit {
-  tickets: Ticket[] = [];
+  currentUser: string = this.ticketService.currentUser;
   searchedTickets: Ticket[] = [];
   favorites: Favorite[] = [];
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
   searchTerm: string = "";
   userID: string = "";
-  currentUser: string = "";
-  grabbedTicket: Ticket = new Ticket (0,"","","",false,false,"");
+  grabbedTicket: Ticket = new Ticket (0,"","","","",false,"");
   
 
-  constructor( private ticketService: TicketService, private router: Router, ) {
+  constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
-  }
+   }
 
   showAllTickets(): void {
-    this.ticketService.showAllTickets().subscribe((response) => {
-      this.tickets = response; // Populates both our arrays initially.
-      this.searchedTickets = response; // We filter tickets to get this and use this as the array to display.
+    this.ticketService.showAllTickets().subscribe((allTickets) => {
+      this.searchedTickets = allTickets; // We filter tickets to get this and use this as the array to display.
     });
   }
 
   showAllFavorites(): void {
-    this.ticketService.showFavorites().subscribe((response) => {
-      this.favorites = response;
+    this.ticketService.showFavorites().subscribe((allFavories) => {
+      this.favorites = allFavories;
     });
   }
 
   createFavorite(ticketID: number): void {
-    this.newFavorite = new Favorite (undefined!, this.currentUser, ticketID);
-    
-    this.showAllFavorites(); // We need to do this method call before and after subscribing for some reason.
+    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
 
-    this.ticketService.createFavorite(this.newFavorite).subscribe();
-
-    this.showAllFavorites();
+    this.ticketService.createFavorite(this.newFavorite).subscribe(() => {
+      this.showAllFavorites(); // To update the new favorite with the correct pkId.
+      // This must be called inside subscribe() as .subscribe runs at the very end of the function, no matter what.
+    });
   }
 
   deleteFavorite(ticketID: number): void {
-    this.showAllFavorites();
+    let foundFav: Favorite = this.favorites.find(favorite => 
+      favorite.id === ticketID && favorite.userId === this.currentUser
+    )!; // The "!" at the end is to tell typescript that this will not be undefined. Without it, we get a type error saying it could be undefined.
 
-    this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
-        this.ticketService.deleteFavorite(favorite.pkId).subscribe();
-      }
+    this.ticketService.deleteFavorite(foundFav.pkId).subscribe(() => {
+      this.favorites.splice(this.favorites.indexOf(foundFav), 1); // splice(index, 1) removes the element from the array at index.
     });
-    
-    this.showAllFavorites();
   }
 
   isFavorited(ticketID: number): boolean {
-    let foundFav: Favorite = new Favorite(-1, "user here", -1);
-    
-
-    this.favorites.forEach(favorite => {
-      if (favorite.id === ticketID && favorite.userId === this.currentUser) {
-        foundFav = favorite;
+    for (let i = 0; i < this.favorites.length; i++) {
+      if (this.favorites[i].id === ticketID && this.favorites[i].userId === this.currentUser) {
+        return true;
       }
-    });
-
-    if (foundFav.pkId !== -1) {
-      return true;
     }
+
     return false;
   }
 
   searchTicketsByTitle(searchTerm: string): void {
-    let searchByFaves: any = document.getElementById("favSearchCheckBox");
+    let searchByFaves: any = document.getElementById("favSearchCheckBox") ?? false; // This starts hidden, so we default to false to avoid errors before user login.
     let searchByStatus: any = document.getElementById("openStatusSearchCheckBox");
     
     this.ticketService.searchTicketsByTitle(searchTerm).subscribe((response) => {
       this.searchedTickets = response;
       
-      if (searchByFaves.checked === true) {
-        this.searchFavoritesByTitle();
+      if (searchByFaves.checked) { //searchByFaves.checked is a bool
+        this.searchForFavorites();
       }
   
-      if (searchByStatus.checked === true) {
+      if (searchByStatus.checked) {
         this.searchByOpenStatus();
       }
     });
@@ -97,45 +85,62 @@ export class TodoDisplayComponent implements OnInit {
   searchByOpenStatus(): void {
     let newSearched: Ticket[] = [];
 
-    this.searchedTickets.forEach((ticket) => {
-      if (ticket.isOpen === true) { // Used to tell display what tickets should be shown.
-        newSearched.push(ticket);
-      }
-    });
+    newSearched = this.searchedTickets.filter(ticket => 
+      ticket.isOpen // ticket.isOpen is a bool
+    );
 
     this.searchedTickets = newSearched;
   }
 
-  searchFavoritesByTitle(): void {
+  searchForFavorites(): void {
     let newSearched: Ticket[] = [];
 
-    this.searchedTickets.forEach((ticket) => {
-      if (this.isFavorited(ticket.id)) { // Used to tell display what tickets should be shown.
-        newSearched.push(ticket);
-      }
-    });
+    newSearched = this.searchedTickets.filter(ticket => 
+      this.isFavorited(ticket.id)
+    );
 
     this.searchedTickets = newSearched;
   }
 
-  login(): void {
-    this.currentUser = this.userID.toLowerCase();
+  swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
+    ticket.isOpen = openStatus;
+    
+    if (openStatus === false) {
+      ticket.resolvedUserId = this.currentUser;
+    }
+    else {
+      ticket.resolvedUserId = "";
+    }
+    
+    this.ticketService.updateTicket(id, ticket).subscribe();
+  }
+
+  deleteTicket(id: number) {
+    let toDelete: Ticket = this.searchedTickets.find(ticket =>
+      ticket.id === id
+    )!;
+
+    this.ticketService.deleteTicket(id).subscribe(() =>{
+      this.searchedTickets.splice(this.searchedTickets.indexOf(toDelete), 1);
+    });
+  }
+  
+  ngOnInit(): void { // We call this to update page when user clicks login.
+    this.currentUser= this.ticketService.currentUser;
     this.userID = "";
   }
 
-  logout(): void {
-    this.currentUser = "";
+  getTicket(ticket: Ticket){
+    this.ticketService.ticket = ticket;
+    this.router.navigateByUrl(`/ticket-view`);
   }
   
-  ngOnInit(): void {
-  }
-
-  getTicket(t: Ticket){
-    this.grabbedTicket = t;
-    //Object.assign(this.ticketService.grabbedTicket, t);
-    console.log(this.grabbedTicket);
-    this.router.navigateByUrl(`/ticket-view/${t.id}`);
-    
+  resolveTicket(id: number, ticket: Ticket, resolution: string): void {
+    if(ticket.isOpen === true){
+      this.ticketService.addResolution(id, ticket, resolution).subscribe();
+    }
+    else{
+      ticket.resolution = "This Ticket has not been resolved yet.";
+    }
   }
 }
-

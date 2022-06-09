@@ -1,0 +1,25 @@
+<h1>New ticket form</h1>
+
+<p *ngIf = "currentUser === ''">
+    <input type="text" placeholder="Username" [(ngModel)]="userID" >
+    <br>
+
+    <button (click)="ticketService.login(userID); ngOnInit()">Login</button>
+    <br>
+</p>
+
+<p *ngIf="currentUser !== ''">
+    Logged in as: {{currentUser}}
+    <button (click)="ticketService.logout(); ngOnInit()">Logout</button>    
+    <br>
+
+    Both inputs must be filled out to submit a new ticket.
+    <br>
+
+    <input type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title">
+
+    <input type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem">
+
+    <button *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
+    <button *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
+</p>

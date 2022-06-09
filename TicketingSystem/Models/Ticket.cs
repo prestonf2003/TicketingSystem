@@ -14,7 +14,7 @@ namespace TicketingSystem.Models
         public string? OpenedUserId { get; set; }
         public string? Title { get; set; }
         public string? ResolvedUserId { get; set; }
-        public bool? IsFavorited { get; set; }
+        public string? Resolution { get; set; }
         public bool? IsOpen { get; set; }
         public string? ProblemDescription { get; set; }
 

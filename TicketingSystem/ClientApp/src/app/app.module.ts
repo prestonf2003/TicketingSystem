@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { TodoDisplayComponent } from './todo-display/todo-display.component';
 import { TicketViewComponent} from './ticket-view/ticket-view.component';
+import { SubmitTicketComponent } from './submit-ticket/submit-ticket.component';
 
 @NgModule({
   declarations: [
@@ -20,18 +21,20 @@ import { TicketViewComponent} from './ticket-view/ticket-view.component';
     CounterComponent,
     FetchDataComponent,
     TodoDisplayComponent,
-    TicketViewComponent
+    TicketViewComponent,
+    SubmitTicketComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: TodoDisplayComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'todo-display', component: TodoDisplayComponent },
-      { path: 'ticket-view/:id', component: TicketViewComponent}
+      { path: 'submit-ticket', component: SubmitTicketComponent },
+      { path: 'ticket-view', component: TicketViewComponent }
     ])
   ],
   providers: [],
