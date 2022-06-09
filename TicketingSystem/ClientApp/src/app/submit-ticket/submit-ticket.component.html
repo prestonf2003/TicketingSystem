@@ -5,29 +5,29 @@
     <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
     <br>
 </p>
-
-<div *ngIf="currentUser !== ''">
-
-    Logged in as: {{currentUser}}
-    <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
-    <p></p>    
-    <br>
-
-    <title>W3.CSS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <body>
+<div *ngIf="currentUser !== ''">
+    
 
-    <div class="w3-card-4">
-    <div class="w3-container w3-light-grey">
-        <h2>New Ticket Form<h2>
+    <div class="w3-container w3-light-grey w3-card-4">
+        <h2 style="text-align: center">New Ticket Form</h2> 
+        <p style="text-align: center">
+            Logged in as: {{currentUser}}
+            <button style="text-align: center" class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
+        </p>
 
-  <form class="w3-container" action="/action_page.php">
-      <p>      
-      <input class="w3-input w3-border w3-white" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title"></p>
-      <p>      
-      <input class="w3-input w3-border w3-white" name="problemDescription" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem"></p>
-      <p>
-      <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
-      <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
-  </form>
+        <p>      
+            <input name="neededToAvoidError"name="neededToAvoidError" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title">
+        </p>
+      
+        <p>      
+            <input name="problemDescription" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem">
+        </p>
+
+        <p>
+            <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
+            <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
+        </p>
+    </div>
+</div>
