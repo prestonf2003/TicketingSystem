@@ -37,6 +37,7 @@
                 disabled>Resolve</button>
             <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length !== 0"
                 (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
+                <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen" (click)="deleteTicket(focusTicket.id)">Delete</button>
             <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen"
                 (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
             <p> </p>

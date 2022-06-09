@@ -25,14 +25,12 @@
         Ticket ID: {{ticket.id}} - Title: {{ticket.title}} <button class="buttonStyle" (click)="getTicket(ticket)" ng-click="grabbedTicket">View Ticket</button>
         <button class="buttonStyle" *ngIf="currentUser !== '' && !isFavorited(ticket.id)" (click)="createFavorite(ticket.id)">Favorite</button>
         <button class="buttonStyle" *ngIf="currentUser !== '' && isFavorited(ticket.id)" (click)="deleteFavorite(ticket.id)">Remove from favorites</button>
-        <button class="buttonStyle" *ngIf="currentUser !== '' && !ticket.isOpen" (click)="deleteTicket(ticket.id)">Delete</button>
+
         <br> Issue: {{ticket.problemDescription}}
         <br> Opened by: {{ticket.openedUserId}} -
         <span *ngIf="ticket.isOpen">
             Open ticket
         </span>
-        <span *ngIf="!ticket.isOpen">
-            Resolved by: {{ticket.resolvedUserId}} <button class="buttonStyle" *ngIf="currentUser !== ''" (click)="ticketService.swapTicketOpenStatus(ticket.id, ticket, true)">Reopen ticket</button>
-        </span>
+
     </p>
 </div>

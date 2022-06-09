@@ -115,15 +115,7 @@ export class TodoDisplayComponent implements OnInit {
     this.ticketService.updateTicket(id, ticket).subscribe();
   }
 
-  deleteTicket(id: number) {
-    let toDelete: Ticket = this.searchedTickets.find(ticket =>
-      ticket.id === id
-    )!;
-
-    this.ticketService.deleteTicket(id).subscribe(() =>{
-      this.searchedTickets.splice(this.searchedTickets.indexOf(toDelete), 1);
-    });
-  }
+ 
   
   ngOnInit(): void { // We call this to update page when user clicks login.
     this.currentUser= this.ticketService.currentUser;
