@@ -16,9 +16,9 @@
     Both inputs must be filled out to submit a new ticket.
     <br>
 
-    <input type="text" [(ngModel)]="title" placeholder="Title">
+    <input type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title">
 
-    <input type="text" [(ngModel)]="problemDescription" placeholder="Describe the problem">
+    <input type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem">
 
     <button *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
     <button *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>

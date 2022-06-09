@@ -6,8 +6,8 @@
     <br>
 </p>
 
-
-<span *ngIf="currentUser !== ''">
+<ng-template #notLoggedIn>Please login to view ticket details.</ng-template>
+<span *ngIf="currentUser !== ''; else notLoggedIn">
     Logged in as: {{currentUser}}
     <button (click)="logout()">Logout</button>    
     <br>
@@ -28,3 +28,5 @@
         Resolved by: {{focusTicket.resolvedUserId}} <button *ngIf="currentUser !== ''" (click)="swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
     </span>
 </div>
+
+<ng-template #notLoggedIn>Please login to view ticket details.</ng-template>

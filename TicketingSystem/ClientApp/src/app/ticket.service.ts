@@ -10,6 +10,11 @@ import { Ticket } from './ticket';
 export class TicketService {
   urlRoot: string;
   currentUser: string = ""; 
+  headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8'); // We don't need headers or requestOption, but it makes console less bad.
+  requestOptions: Object = {
+    headers: this.headers,
+    responseType: 'text'
+  }
 
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
@@ -32,15 +37,15 @@ export class TicketService {
 
   createTicket(t: Ticket): Observable<Ticket> {
     console.log(t.id);
-    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" ,t);
+    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" ,t, this.requestOptions); // this.requestOptions is to avoid all the red status: 200 errors that don't matter.
   }
 
   deleteTicket(id: number): Observable<Ticket> {
-    return this.http.delete<Ticket>(this.urlRoot + "ticket/DeleteTicket/" + id);
+    return this.http.delete<Ticket>(this.urlRoot + "ticket/DeleteTicket/" + id, this.requestOptions);
   }
 
   updateTicket(id: number, t: Ticket): Observable<Ticket> {
-    return this.http.post<Ticket>(this.urlRoot + "ticket/UpdateTicket/" + id ,t);
+    return this.http.post<Ticket>(this.urlRoot + "ticket/UpdateTicket/" + id, t, this.requestOptions);
   }
 
   showFavorites(): Observable <Favorite[]> {
@@ -48,11 +53,13 @@ export class TicketService {
   }
 
   createFavorite(f: Favorite): Observable<Favorite> {
-    return this.http.put<Favorite>(this.urlRoot + "favorite/CreateNewFavorite/", f);
+    
+
+    return this.http.put<Favorite>(this.urlRoot + "favorite/CreateNewFavorite/", f, this.requestOptions);
   }
 
   deleteFavorite(id: number): Observable<Favorite> {
-    return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id);
+    return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id, this.requestOptions);
   }
   addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> {
     return this.http.post<Ticket>(this.urlRoot + "ticket/AddResolution/" + id, ticket);

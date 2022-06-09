@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoDisplayComponent } from '../todo-display/todo-display.component';
 import { Ticket } from '../ticket';
-import { provideRoutes } from '@angular/router';
 import { TicketService } from '../ticket.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ticket-view',
