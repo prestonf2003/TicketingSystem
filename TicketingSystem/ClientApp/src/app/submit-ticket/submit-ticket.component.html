@@ -1,24 +1,33 @@
-<h1>New ticket form</h1>
-
 <p *ngIf = "currentUser === ''">
+    Please login to create a new ticket <br>
     <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
+    <br>
     <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
     <br>
 </p>
 
-<p *ngIf="currentUser !== ''">
+<div *ngIf="currentUser !== ''">
+
     Logged in as: {{currentUser}}
-    <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>    
+    <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
+    <p></p>    
     <br>
 
-    Both inputs must be filled out to submit a new ticket.
-    <br>
+    <title>W3.CSS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <body>
 
-    <input type="text" [(ngModel)]="title" maxlength="40" placeholder="Title">
-    <br>
+    <div class="w3-card-4">
+    <div class="w3-container w3-light-grey">
+        <h2>New Ticket Form<h2>
 
-    <input type="text" name="problemDescription" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem">
-
-    <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
-    <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
-</p>
+  <form class="w3-container" action="/action_page.php">
+      <p>      
+      <input class="w3-input w3-border w3-white" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title"></p>
+      <p>      
+      <input class="w3-input w3-border w3-white" name="problemDescription" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem"></p>
+      <p>
+      <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
+      <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
+  </form>
