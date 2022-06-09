@@ -1,8 +1,7 @@
 <p *ngIf = "currentUser === ''">
     Please login to create a new ticket <br>
-    <input type="text" placeholder="Username" [(ngModel)]="userID" >
+    <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
     <br>
-
     <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
     <br>
 </p>
@@ -23,13 +22,12 @@
     <div class="w3-container w3-light-grey">
         <h2>New Ticket Form<h2>
 
-    <form class="w3-container" action="/action_page.php">
-        <p>      
-        <input class="w3-input w3-border w3-white" name="first" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title"></p>
-        <p>      
-        <input class="w3-input w3-border w3-white" name="last" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem"></p>
-        <p>
-        <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
-        <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
-    </form>
-
+  <form class="w3-container" action="/action_page.php">
+      <p>      
+      <input class="w3-input w3-border w3-white" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title"></p>
+      <p>      
+      <input class="w3-input w3-border w3-white" name="problemDescription" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem"></p>
+      <p>
+      <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
+      <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
+  </form>

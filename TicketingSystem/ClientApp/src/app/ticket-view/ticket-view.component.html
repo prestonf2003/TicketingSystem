@@ -1,10 +1,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-
 <p *ngIf="currentUser === ''">
-    <input type="text" [(ngModel)]="userID" placeholder="Username">
-    <br>
-
+    <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
     <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit();">Login</button>
     <br>
 </p>
@@ -15,37 +12,33 @@
     <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
     <br>
     <p></p>
+  
+<div class="w3-card-4">
+    <header class="w3-container w3-light-grey">
+        <h3>{{focusTicket.title}}</h3>
+    </header>
 
-    <div class="w3-card-4">
-
-        <header class="w3-container w3-light-grey">
-            <h3>{{focusTicket.title}}</h3>
-        </header>
-
-        <div class="w3-container">
-            <p>Opened by: {{focusTicket.openedUserId}}</p>
-            <p>Issue Description: {{focusTicket.problemDescription}}</p>
-            <hr>
-            <p *ngIf="focusTicket.isOpen !== true">Ticket status: Resolved</p>
-            <p *ngIf="focusTicket.isOpen === true">Ticket status: Open</p>
-            <p *ngIf="focusTicket.isOpen">Please enter your resolution steps.</p>
-            <p *ngIf="focusTicket.isOpen !== true">This ticket was resolved by {{focusTicket.resolvedUserId}}</p>
-            <p *ngIf="!focusTicket.isOpen">Resolution steps: {{focusTicket.resolution}}</p>
-            <input *ngIf="focusTicket.isOpen" type="text" [(ngModel)]="resolution">
-            <p></p>
-            <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0"
-                disabled>Resolve</button>
-            <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length !== 0"
-                (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
-                <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen" (click)="deleteTicket(focusTicket.id)">Delete</button>
-            <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen"
-                (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
-            <p> </p>
-            <br>
-        </div>
-
-        <ng-template #notLoggedIn>Please login to view ticket details.</ng-template>
-
-
-
+    <div class="w3-container">
+        <p>Opened by: {{focusTicket.openedUserId}}</p>
+        <p>Issue Description: {{focusTicket.problemDescription}}</p>
+        <hr>
+        <p *ngIf="focusTicket.isOpen !== true">Ticket status: Resolved</p>
+        <p *ngIf="focusTicket.isOpen === true">Ticket status: Open</p>
+        <p *ngIf="focusTicket.isOpen">Please enter your resolution steps.</p>
+        <p *ngIf="focusTicket.isOpen !== true">This ticket was resolved by {{focusTicket.resolvedUserId}}</p>
+        <p *ngIf="!focusTicket.isOpen">Resolution steps: {{focusTicket.resolution}}</p>
+        <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution">
+        <p></p>
+        <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0"
+            disabled>Resolve</button>
+        <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length !== 0"
+            (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
+            <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen" (click)="deleteTicket(focusTicket.id)">Delete</button>
+        <button class="buttonStyle" *ngIf="currentUser !== '' && !focusTicket.isOpen"
+            (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
+        <p> </p>
+        <br>
     </div>
+
+    <ng-template #notLoggedIn>Please login to view ticket details.</ng-template>
+</div>
