@@ -29,9 +29,7 @@
             <br>
             Issue Description: {{focusTicket.problemDescription}}
         </p>
-
         <hr>
-
         <p *ngIf="focusTicket.isOpen === false">
             Ticket status: Resolved
             <br>
@@ -44,9 +42,6 @@
             <br>
             Please enter your resolution steps.
         </p>
-        
-        
-
         <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution" placeholder="Enter resolution steps">
         <p></p>
         <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0"
@@ -60,3 +55,21 @@
         <br>
     </div>
 </div>
+<p></p>
+<p></p>
+
+<div class="w3-card-4">
+    <header class="w3-container w3-light-grey">
+      <h3>Update Ticket</h3>
+    </header>
+    
+    <div class="w3-container">
+        <p>New Title</p>
+        <input type="text" [(ngModel)]="title">
+        <br>
+        <p>New Description</p>
+        <input type="text" [(ngModel)]="problemDescription">
+        <button class="buttonStyle" (click)="updateTicket(focusTicket.id, focusTicket)">Update Ticket</button>
+        <p></p>
+    </div>    
+</div> 

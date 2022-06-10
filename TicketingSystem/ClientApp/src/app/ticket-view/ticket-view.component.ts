@@ -16,6 +16,8 @@ export class TicketViewComponent implements OnInit {
   focusTicket = this.ticketService.ticket;
   currentUser: string = this.ticketService.currentUser;
   resolution: string = this.focusTicket.resolution;
+  title: string = "";
+  problemDescription = "";
 
   constructor(public ticketService: TicketService, private router: Router) { }
 
@@ -36,5 +38,11 @@ export class TicketViewComponent implements OnInit {
 
   deleteTicket(id: number) {
     this.ticketService.deleteTicket(id).subscribe(() => this.router.navigateByUrl(``));
+  }
+
+  updateTicket(id: number, ticket: Ticket){
+  ticket.title = this.title;
+  ticket.problemDescription = this.problemDescription;
+  this.ticketService.updateTicket(id, ticket).subscribe();
   }
 }

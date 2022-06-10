@@ -39,9 +39,9 @@
     </header>
     
     <div class="w3-container">
-        <p>Open date: {{ticket.openDate}}</p>
+        <p>Open date: {{ticket.openDate | date:'MM/dd/yyyy'}}</p>
         <p *ngIf="ticket.closeDate !== null">
-            Closed date: {{ticket.closeDate}}
+            Closed date: {{ticket.closeDate |  date:'MM/dd/yyyy'}}
             <br>
             Time between: {{timeBetween(ticket)}}
         </p>
