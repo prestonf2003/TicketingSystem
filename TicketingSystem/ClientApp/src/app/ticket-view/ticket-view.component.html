@@ -65,11 +65,12 @@
     
     <div class="w3-container">
         <p>New Title</p>
-        <input type="text" [(ngModel)]="title">
+        <input type="text" [(ngModel)]="title" required>
         <br>
         <p>New Description</p>
-        <input type="text" [(ngModel)]="problemDescription">
-        <button class="buttonStyle" (click)="updateTicket(focusTicket.id, focusTicket)">Update Ticket</button>
+        <input type="text" [(ngModel)]="problemDescription" required>
+        <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Update ticket</button>
+        <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="updateTicket(focusTicket.id, focusTicket)">Update ticket</button>
         <p></p>
     </div>    
 </div> 
