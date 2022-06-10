@@ -63,6 +63,8 @@ namespace TicketingSystem.Controllers
             t.OpenedUserId = updatedTicket.OpenedUserId;
             t.IsOpen = updatedTicket.IsOpen;
             t.Resolution = updatedTicket.Resolution;
+            t.OpenDate = updatedTicket.OpenDate;
+            t.CloseDate = updatedTicket.CloseDate;
 
             db.Tickets.Update(t);
             db.SaveChanges();

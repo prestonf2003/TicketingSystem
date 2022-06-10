@@ -33,7 +33,7 @@ namespace TicketingSystem.Models
             modelBuilder.Entity<Favorite>(entity =>
             {
                 entity.HasKey(e => e.PkId)
-                    .HasName("PK__Favorite__40A359C3317F9394");
+                    .HasName("PK__Favorite__40A359C38C844075");
 
                 entity.Property(e => e.PkId).HasColumnName("pkId");
 
@@ -47,14 +47,23 @@ namespace TicketingSystem.Models
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Favorites__id__09A971A2");
+                    .HasConstraintName("FK__Favorites__id__1DB06A4F");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.CloseDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("closeDate");
+
                 entity.Property(e => e.IsOpen).HasColumnName("isOpen");
+
+                entity.Property(e => e.OpenDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("openDate")
+                    .HasDefaultValueSql("(sysdatetime())");
 
                 entity.Property(e => e.OpenedUserId)
                     .HasMaxLength(40)

@@ -17,6 +17,8 @@ namespace TicketingSystem.Models
         public string? Resolution { get; set; }
         public bool? IsOpen { get; set; }
         public string? ProblemDescription { get; set; }
+        public DateTime OpenDate { get; set; }
+        public DateTime? CloseDate { get; set; }
 
         public virtual ICollection<Favorite> Favorites { get; set; }
     }
