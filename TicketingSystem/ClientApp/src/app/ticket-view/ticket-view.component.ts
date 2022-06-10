@@ -28,11 +28,12 @@ export class TicketViewComponent implements OnInit {
     ticket.resolution = this.resolution;
     ticket.resolvedUserId = this.ticketService.currentUser;
     ticket.isOpen = false;
+    ticket.closeDate = new Date(Date()); //maybe new Date(Date.parse(Date()); instead)
     this.ticketService.updateTicket(id, ticket).subscribe();
 
     this.resolution = "";
   }
-  
+
   deleteTicket(id: number) {
     this.ticketService.deleteTicket(id).subscribe(() => this.router.navigateByUrl(``));
   }

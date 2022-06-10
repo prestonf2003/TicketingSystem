@@ -61,7 +61,7 @@ export class TicketService {
     return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id, this.requestOptions);
   }
 
-  addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> {
+  addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> { // maybe delete resolution, probably not needed anymore
     return this.http.post<Ticket>(this.urlRoot + "ticket/AddResolution/" + id, ticket);
   }
 
@@ -73,6 +73,8 @@ export class TicketService {
     }
     else {
       ticket.resolvedUserId = "";
+      ticket.closeDate = new Date();
+      ticket.openDate = new Date(Date());
     }
     
     this.updateTicket(id, ticket).subscribe();

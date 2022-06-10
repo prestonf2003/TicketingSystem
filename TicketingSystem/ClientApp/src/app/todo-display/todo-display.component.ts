@@ -16,8 +16,7 @@ export class TodoDisplayComponent implements OnInit {
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
   searchTerm: string = "";
   userID: string = "";
-  grabbedTicket: Ticket = new Ticket (0,"","","","",false,"");
-  
+  timeBetweenOpenClose: number = -1;
 
   constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
@@ -129,5 +128,41 @@ export class TodoDisplayComponent implements OnInit {
     else{
       ticket.resolution = "This Ticket has not been resolved yet.";
     }
+  }
+
+  timeBetween(ticket: Ticket): string {
+    let timeString: string = "";
+    this.timeBetweenOpenClose = new Date(ticket.closeDate).getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds
+    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 1000; // to seconds
+    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 60; // to minutes
+    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 60; // to hours
+    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 24; // To days
+
+    if (this.timeBetweenOpenClose >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose) + " days ";
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 24 // Converts back to hours
+    }
+    
+    if (this.timeBetweenOpenClose >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose) + " hours ";
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 60 // Converts back to minutes
+    }
+
+    if (this.timeBetweenOpenClose >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose) + " minutes ";
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
+      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 60 // Converts back to seconds
+    }
+
+    if (this.timeBetweenOpenClose >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose) + " seconds";
+    }
+
+
+    console.log(this.timeBetweenOpenClose);
+
+    return timeString;
   }
 }

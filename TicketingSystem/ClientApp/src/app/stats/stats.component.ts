@@ -11,7 +11,7 @@ export class StatsComponent implements OnInit {
   currentUser: string = this.ticketService.currentUser;
   userID: string = "";
   allTickets: Ticket[] = [];
-  allResolvedUserIdsAndStats: any[][] = [["", -1]];
+  allResolvedUserIdsAndStats: any[][] = [["", -1]]; // will be an array with elements [resolvedUserId(string), count of resolvedUserId's closed tickets(number)]
   openTicketCount: number = 0;
   
   constructor(public ticketService: TicketService) {

@@ -33,11 +33,19 @@
 
 <div *ngFor="let ticket of searchedTickets" class="w3-card-4">
     
+    
     <header class="w3-container w3-light-grey">
     <h3>{{ticket.id}} - {{ticket.title}}</h3>
     </header>
     
     <div class="w3-container">
+        <p>Open date: {{ticket.openDate}}</p>
+        <p *ngIf="ticket.closeDate !== null">
+            Closed date: {{ticket.closeDate}}
+            <br>
+            Time between: {{timeBetween(ticket)}}
+        </p>
+
         <p>
             <br> Issue: {{ticket.problemDescription}}
             <br> Opened by: {{ticket.openedUserId}} -
