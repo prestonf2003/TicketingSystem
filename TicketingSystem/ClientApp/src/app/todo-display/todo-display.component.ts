@@ -22,7 +22,7 @@ export class TodoDisplayComponent implements OnInit {
   constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
-   }
+  }
 
   showAllTickets(): void {
     this.ticketService.showAllTickets().subscribe((allTickets) => {

@@ -1,45 +1,53 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-<div class="w3-card-4">
-    <div class="w3-container">
-        
-        <p *ngIf="currentUser === ''">
-            <br>
-            <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
-            <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit();">Login</button>
-        </p>
-    
-        <span *ngIf="currentUser !== ''; else notLoggedIn" >
-            <br>
-            Logged in as: {{currentUser}}
-            <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
-            <br> <!-- For some reason we need to <br> here for things to line up really well. -->
-            <br>
-        </span> 
-        
-        <ng-template #notLoggedIn>
-            <p>
-                Please login to view ticket details.
-            </p>
-        </ng-template>
-    </div>
+<div class="w3-container w3-light-grey w3-card-4">
+    <p *ngIf = "currentUser === ''">
+        <br>
+        Please login to view this ticket <br>
+        <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
+        <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
+        <br>
+        <br>
+    </p>
 </div>
 
 <div *ngIf="currentUser !== ''" class="w3-card-4">
     <header class="w3-container w3-light-grey">
-        <h3>{{focusTicket.title}}</h3>
+        <h3>
+            {{focusTicket.title}} 
+        </h3>
+        <p>
+            Logged in as: {{currentUser}}
+            <button class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
+        </p>
     </header>
-
+    <br>
+    
     <div class="w3-container">
-        <p>Opened by: {{focusTicket.openedUserId}}</p>
-        <p>Issue Description: {{focusTicket.problemDescription}}</p>
+        <p>
+            Opened by: {{focusTicket.openedUserId}}
+            <br>
+            Issue Description: {{focusTicket.problemDescription}}
+        </p>
+
         <hr>
-        <p *ngIf="focusTicket.isOpen !== true">Ticket status: Resolved</p>
-        <p *ngIf="focusTicket.isOpen === true">Ticket status: Open</p>
-        <p *ngIf="focusTicket.isOpen">Please enter your resolution steps.</p>
-        <p *ngIf="focusTicket.isOpen !== true">This ticket was resolved by {{focusTicket.resolvedUserId}}</p>
-        <p *ngIf="!focusTicket.isOpen">Resolution steps: {{focusTicket.resolution}}</p>
-        <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution">
+
+        <p *ngIf="focusTicket.isOpen === false">
+            Ticket status: Resolved
+            <br>
+            Ticket resolved by: {{focusTicket.resolvedUserId}}
+            <br>
+            Resolution steps: {{focusTicket.resolution}}
+        </p>
+        <p *ngIf="focusTicket.isOpen === true">
+            Ticket status: Open
+            <br>
+            Please enter your resolution steps.
+        </p>
+        
+        
+
+        <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution" placeholder="Enter resolution steps">
         <p></p>
         <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0"
             disabled>Resolve</button>

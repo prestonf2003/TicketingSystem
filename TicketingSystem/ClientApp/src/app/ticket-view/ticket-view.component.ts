@@ -15,7 +15,7 @@ export class TicketViewComponent implements OnInit {
   userID: string = "";
   focusTicket = this.ticketService.ticket;
   currentUser: string = this.ticketService.currentUser;
-  resolution: string = "";
+  resolution: string = this.focusTicket.resolution;
 
   constructor(public ticketService: TicketService, private router: Router) { }
 
@@ -29,10 +29,11 @@ export class TicketViewComponent implements OnInit {
     ticket.resolvedUserId = this.ticketService.currentUser;
     ticket.isOpen = false;
     this.ticketService.updateTicket(id, ticket).subscribe();
-  }
-  deleteTicket(id: number) {
-    let toDelete: Ticket = this.focusTicket;
 
-    this.ticketService.deleteTicket(this.focusTicket.id).subscribe(Response => this.router.navigateByUrl(``));
+    this.resolution = "";
+  }
+  
+  deleteTicket(id: number) {
+    this.ticketService.deleteTicket(id).subscribe(() => this.router.navigateByUrl(``));
   }
 }

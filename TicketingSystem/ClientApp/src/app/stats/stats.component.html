@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<div class="w3-card-4">
+    <header class="w3-container w3-light-grey">
+        <p>
+            Open tickets: {{openTicketCount}}
+            <br>
+            <input type="radio" id="alphabetSort" name="sortOption" (click)="getResolvedUserIds()">
+            <label for="alphabetSort">Alphabetical</label>
+            <br>
+            <input type="radio" id="greatestToLeastSort" name="sortOption" (click)="getResolvedUserIds()">
+            <label for="greatestToLeastSort">Greatest to least</label>
+        </p>
+    </header>
+    
+    <div class="w3-container">
+        <h3>Closed ticket count</h3>
+        
+        <span *ngFor="let stat of allResolvedUserIdsAndStats" > 
+            <p *ngIf="stat[1] === 1">
+                {{stat[0]}} closed 1 ticket.
+            </p>
+        
+            <p *ngIf="stat[1] >= 2">
+                {{stat[0]}} closed {{stat[1]}} tickets.
+            </p>
+        </span>
+    </div>
+</div>
+
+

@@ -12,6 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { TodoDisplayComponent } from './todo-display/todo-display.component';
 import { TicketViewComponent} from './ticket-view/ticket-view.component';
 import { SubmitTicketComponent } from './submit-ticket/submit-ticket.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SubmitTicketComponent } from './submit-ticket/submit-ticket.component';
     FetchDataComponent,
     TodoDisplayComponent,
     TicketViewComponent,
-    SubmitTicketComponent
+    SubmitTicketComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -34,7 +36,8 @@ import { SubmitTicketComponent } from './submit-ticket/submit-ticket.component';
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'todo-display', component: TodoDisplayComponent },
       { path: 'submit-ticket', component: SubmitTicketComponent },
-      { path: 'ticket-view', component: TicketViewComponent }
+      { path: 'ticket-view', component: TicketViewComponent },
+      { path: 'stats', component: StatsComponent }
     ])
   ],
   providers: [],
