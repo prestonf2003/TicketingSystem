@@ -1,0 +1,37 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<div class="w3-container w3-light-grey w3-card-4">
+    <p *ngIf = "currentUser === ''">
+        <br>
+        Please login to create a new ticket <br>
+        <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
+        <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
+        <br>
+        <br>
+    </p>
+</div>
+
+<div *ngIf="currentUser !== ''">
+
+    <div class="w3-container w3-light-grey w3-card-4">
+        <h2 style="text-align: center">New Ticket Form</h2> 
+        <p style="text-align: center">
+            Logged in as: {{currentUser}}
+            <button style="text-align: center" class="buttonStyle" (click)="ticketService.logout(); ngOnInit()">Logout</button>
+        </p>
+
+        <p>      
+            <input name="neededToAvoidError"name="neededToAvoidError" type="text" [(ngModel)]="title"  maxlength="40" placeholder="Title">
+        </p>
+      
+        <p>      
+            <input name="problemDescription" type="text" [(ngModel)]="problemDescription" maxlength="200" placeholder="Describe the problem">
+        </p>
+
+        <p>
+            <button class="buttonStyle"  *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Submit ticket</button>
+            <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="createTicket()">Submit ticket</button>
+        </p>
+    </div>
+</div>

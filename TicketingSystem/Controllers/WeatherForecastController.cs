@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TicketingSystem.Models;
 
 namespace TicketingSystem.Controllers;
 
@@ -28,6 +29,14 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+    }
+
+    TicketDBContext db = new TicketDBContext();
+
+    [HttpGet("ShowAllFavorites")]
+    public List<Favorite> ShowAllFavorites()
+    {
+        return db.Favorites.ToList();
     }
 }
 
