@@ -37,8 +37,7 @@ export class TicketService {
   }
 
   createTicket(t: Ticket): Observable<Ticket> {
-    console.log(t.id);
-    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" ,t, this.requestOptions); // this.requestOptions is to avoid all the red status: 200 errors that don't matter.
+    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" , t, this.requestOptions); // this.requestOptions is to avoid all the red status: 200 errors that don't matter.
   }
 
   deleteTicket(id: number): Observable<Ticket> {
@@ -73,8 +72,11 @@ export class TicketService {
     }
     else {
       ticket.resolvedUserId = "";
-      ticket.closeDate = new Date();
-      ticket.openDate = new Date(Date());
+      ticket.resolution = "";
+      ticket.closeDate = undefined!;
+      ticket.openDate = new Date();
+      console.log("should be shown when reopen ticket: " + ticket.openDate);
+      console.log("should be shown when reopen ticket: " + ticket.closeDate);
     }
     
     this.updateTicket(id, ticket).subscribe();
