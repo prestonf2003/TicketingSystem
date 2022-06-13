@@ -20,6 +20,7 @@ export class TicketService {
   constructor (private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.urlRoot = baseUrl;
   }
+
   showAllTickets(): Observable <Ticket[]> {
     return this.http.get<Ticket[]>(this.urlRoot + "ticket/ShowAllTickets")
   }
@@ -37,8 +38,7 @@ export class TicketService {
   }
 
   createTicket(t: Ticket): Observable<Ticket> {
-    console.log(t.id);
-    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" ,t, this.requestOptions); // this.requestOptions is to avoid all the red status: 200 errors that don't matter.
+    return this.http.put<Ticket>(this.urlRoot + "ticket/CreateNewTicket" , t, this.requestOptions); // this.requestOptions is to avoid all the red status: 200 errors that don't matter.
   }
 
   deleteTicket(id: number): Observable<Ticket> {
@@ -61,7 +61,7 @@ export class TicketService {
     return this.http.delete<Favorite>(this.urlRoot + "favorite/DeleteFavorite/" + id, this.requestOptions);
   }
 
-  addResolution(id: number, ticket: Ticket, resolution: string ): Observable<Ticket> { // maybe delete resolution, probably not needed anymore
+  addResolution(id: number, ticket: Ticket): Observable<Ticket> { 
     return this.http.post<Ticket>(this.urlRoot + "ticket/AddResolution/" + id, ticket);
   }
 
@@ -73,8 +73,10 @@ export class TicketService {
     }
     else {
       ticket.resolvedUserId = "";
-      ticket.closeDate = new Date();
-      ticket.openDate = new Date(Date());
+      ticket.resolution = "";
+      ticket.closeDate = undefined!;
+      ticket.openDate = new Date((new Date().getTime() - 4 * 60 * 60 * 1000)); 
+      // We subtract 4 hours to Date(), which prints the current time, but somehow jumps everything forward 4 hours when it gets to the db.
     }
     
     this.updateTicket(id, ticket).subscribe();

@@ -25,7 +25,7 @@ namespace TicketingSystem.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=TicketDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=TicketDB;Trusted_Connection=True;");
             }
         }
 
@@ -34,7 +34,7 @@ namespace TicketingSystem.Models
             modelBuilder.Entity<Favorite>(entity =>
             {
                 entity.HasKey(e => e.PkId)
-                    .HasName("PK__Favorite__40A359C38B86A2B9");
+                    .HasName("PK__Favorite__40A359C3A0EAFF33");
 
                 entity.Property(e => e.PkId).HasColumnName("pkId");
 
@@ -48,7 +48,7 @@ namespace TicketingSystem.Models
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Favorites__id__5FB337D6");
+                    .HasConstraintName("FK__Favorites__id__395884C4");
             });
 
             modelBuilder.Entity<Ticket>(entity =>

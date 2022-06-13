@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
 import { Favorite } from '../favorite';
@@ -17,7 +17,7 @@ export class TodoDisplayComponent implements OnInit {
   searchTerm: string = "";
   userID: string = "";
   timeBetweenOpenClose: number = -1;
-
+  
   constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
@@ -116,52 +116,84 @@ export class TodoDisplayComponent implements OnInit {
     this.userID = "";
   }
 
-  getTicket(ticket: Ticket){
+  getTicket(ticket: Ticket) {
     this.ticketService.ticket = ticket;
     this.router.navigateByUrl(`/ticket-view`);
-  }
-  
-  resolveTicket(id: number, ticket: Ticket, resolution: string): void {
-    if(ticket.isOpen === true){
-      this.ticketService.addResolution(id, ticket, resolution).subscribe();
-    }
-    else{
-      ticket.resolution = "This Ticket has not been resolved yet.";
-    }
   }
 
   timeBetween(ticket: Ticket): string {
     let timeString: string = "";
-    this.timeBetweenOpenClose = new Date(ticket.closeDate).getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds
-    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 1000; // to seconds
-    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 60; // to minutes
-    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 60; // to hours
-    this.timeBetweenOpenClose = this.timeBetweenOpenClose / 24; // To days
+    
+    if (ticket.closeDate !== null) {
+      this.timeBetweenOpenClose = new Date(ticket.closeDate).getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between dates
+    }
+    else  {
+      this.timeBetweenOpenClose = new Date().getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between now and the open date.
+    }
 
-    if (this.timeBetweenOpenClose >= 1) {
-      timeString += Math.trunc(this.timeBetweenOpenClose) + " days ";
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 24 // Converts back to hours
+    this.timeBetweenOpenClose = Math.trunc(this.timeBetweenOpenClose * 1000)/1000; // This deletes the millisecond data, which we don't use and could screw up result.
+    
+    if (this.timeBetweenOpenClose/(1000*60*60*24) >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) + " day";
+      
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) >= 2) { // checks if day should be plural
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60*60*24; // converts to remaining hours
+
+      if (this.timeBetweenOpenClose > 0) { // checks if there's more data to add (TODO: 1 day and 1 millisecond would screw this up)
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
     }
     
-    if (this.timeBetweenOpenClose >= 1) {
-      timeString += Math.trunc(this.timeBetweenOpenClose) + " hours ";
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 60 // Converts back to minutes
+    if (this.timeBetweenOpenClose/(1000*60*60) >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60)) + " hour";
+    
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60*60)) >= 2) {
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60*60 // to remaining minutes
+      
+      if (this.timeBetweenOpenClose > 0) {
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
+    }
+
+    if (this.timeBetweenOpenClose/(1000*60) >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60)) + " minute";
+      
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60)) >= 2) {
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60; // to remaining seconds
+
+      if (this.timeBetweenOpenClose > 0) {
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
     }
 
     if (this.timeBetweenOpenClose >= 1) {
-      timeString += Math.trunc(this.timeBetweenOpenClose) + " minutes ";
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose - Math.trunc(this.timeBetweenOpenClose);
-      this.timeBetweenOpenClose = this.timeBetweenOpenClose * 60 // Converts back to seconds
+      timeString += Math.trunc(this.timeBetweenOpenClose/1000) + " second"; // we don't go past seconds
+      
+      if(Math.trunc(this.timeBetweenOpenClose/1000) >= 2) {
+        timeString += "s.";
+      }
+      else {
+        timeString += ".";
+      }
     }
-
-    if (this.timeBetweenOpenClose >= 1) {
-      timeString += Math.trunc(this.timeBetweenOpenClose) + " seconds";
-    }
-
-
-    console.log(this.timeBetweenOpenClose);
 
     return timeString;
   }

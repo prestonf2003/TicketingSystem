@@ -34,7 +34,9 @@ export class TicketViewComponent implements OnInit {
     ticket.resolution = this.resolution;
     ticket.resolvedUserId = this.ticketService.currentUser;
     ticket.isOpen = false;
-    ticket.closeDate = new Date(Date()); //maybe new Date(Date.parse(Date()); instead)
+    ticket.closeDate = new Date((new Date().getTime() - 4 * 60 * 60 * 1000));
+    // We subtract 4 hours to Date(), which prints the current time, but somehow jumps everything forward 4 hours when it gets to the db.
+    
     this.ticketService.updateTicket(id, ticket).subscribe();
 
     this.resolution = "";
