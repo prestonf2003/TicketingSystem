@@ -18,7 +18,6 @@ export class TodoDisplayComponent implements OnInit {
   userID: string = "";
   timeBetweenOpenClose: number = -1;
   
-
   constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
@@ -117,35 +116,23 @@ export class TodoDisplayComponent implements OnInit {
     this.userID = "";
   }
 
-  getTicket(ticket: Ticket){
+  getTicket(ticket: Ticket) {
     this.ticketService.ticket = ticket;
     this.router.navigateByUrl(`/ticket-view`);
-  }
-  
-  resolveTicket(id: number, ticket: Ticket, resolution: string): void {
-    if(ticket.isOpen === true){
-      this.ticketService.addResolution(id, ticket, resolution).subscribe();
-    }
-    else{
-      ticket.resolution = "This Ticket has not been resolved yet.";
-    }
   }
 
   timeBetween(ticket: Ticket): string {
     let timeString: string = "";
-    console.log(ticket.closeDate);
+    
     if (ticket.closeDate !== null) {
       this.timeBetweenOpenClose = new Date(ticket.closeDate).getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between dates
     }
     else  {
-      this.timeBetweenOpenClose = (new Date().getTime() + 4 * 60 * 60 * 1000) - new Date(ticket.openDate).getTime(); // gives milliseconds between now and the open date.
-      // The  "+ 4 * 60 * 60 * 1000" is to add 4 hours to the close date. This is because of SYSDATETIME for the DB uses a TZ different from EST.
-      // If we had more time we would change TZ for the DB, but right now it's possible to post a ticket late night on 06/13/22 and have it show up on the view as 06/14/22.
+      this.timeBetweenOpenClose = new Date().getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between now and the open date.
     }
 
     this.timeBetweenOpenClose = Math.trunc(this.timeBetweenOpenClose * 1000)/1000; // This deletes the millisecond data, which we don't use and could screw up result.
     
-
     if (this.timeBetweenOpenClose/(1000*60*60*24) >= 1) {
       timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) + " day";
       

@@ -18,6 +18,7 @@ namespace TicketingSystem.Models
 
         public virtual DbSet<Favorite> Favorites { get; set; } = null!;
         public virtual DbSet<Ticket> Tickets { get; set; } = null!;
+        public virtual DbSet<UserPerm> UserPerms { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,7 +34,7 @@ namespace TicketingSystem.Models
             modelBuilder.Entity<Favorite>(entity =>
             {
                 entity.HasKey(e => e.PkId)
-                    .HasName("PK__Favorite__40A359C38C844075");
+                    .HasName("PK__Favorite__40A359C3A0EAFF33");
 
                 entity.Property(e => e.PkId).HasColumnName("pkId");
 
@@ -47,7 +48,7 @@ namespace TicketingSystem.Models
                     .WithMany(p => p.Favorites)
                     .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("FK__Favorites__id__1DB06A4F");
+                    .HasConstraintName("FK__Favorites__id__395884C4");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -84,6 +85,17 @@ namespace TicketingSystem.Models
                 entity.Property(e => e.Title)
                     .HasMaxLength(40)
                     .HasColumnName("title");
+            });
+
+            modelBuilder.Entity<UserPerm>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("UserPerm");
+
+                entity.Property(e => e.AccessLevel).HasMaxLength(30);
+
+                entity.Property(e => e.Username).HasMaxLength(40);
             });
 
             OnModelCreatingPartial(modelBuilder);

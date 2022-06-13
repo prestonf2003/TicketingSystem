@@ -1,9 +1,8 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <div class="w3-container w3-light-grey w3-card-4">
-    <p *ngIf = "currentUser === ''">
-        <br>
-        Please login to view this ticket <br>
+    <p *ngIf="currentUser === ''">
+        <br> Please login to view this ticket <br>
         <input type="text" [(ngModel)]="userID" maxlength="40" placeholder="Username">
         <button class="buttonStyle" (click)="ticketService.login(userID); ngOnInit()">Login</button>
         <br>
@@ -14,7 +13,7 @@
 <div *ngIf="currentUser !== ''" class="w3-card-4">
     <header class="w3-container w3-light-grey">
         <h3>
-            {{focusTicket.title}} 
+            {{focusTicket.title}}
         </h3>
         <p>
             Logged in as: {{currentUser}}
@@ -22,41 +21,50 @@
         </p>
     </header>
     <br>
-    
+
     <div class="w3-container">
         <p>
             Opened by: {{focusTicket.openedUserId}}
-            <br>
-            Issue Description: {{focusTicket.problemDescription}}
+            <br> Issue Description: {{focusTicket.problemDescription}}
         </p>
-
         <hr>
-
         <p *ngIf="focusTicket.isOpen === false">
             Ticket status: Resolved
-            <br>
-            Ticket resolved by: {{focusTicket.resolvedUserId}}
-            <br>
-            Resolution steps: {{focusTicket.resolution}}
+            <br> Ticket resolved by: {{focusTicket.resolvedUserId}}
+            <br> Resolution steps: {{focusTicket.resolution}}
         </p>
         <p *ngIf="focusTicket.isOpen === true">
             Ticket status: Open
-            <br>
-            Please enter your resolution steps.
+            <br> Please enter your resolution steps.
         </p>
-        
-        
-
-        <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution" placeholder="Enter resolution steps">
-        <p></p>
-        <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0"
-            disabled>Resolve</button>
-        <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length !== 0"
-            (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
+        <div *ngIf="validatePerm() === 'Admin'">
+            <input *ngIf="focusTicket.isOpen" name="resolution" type="text" [(ngModel)]="resolution" placeholder="Enter resolution steps">
+            <p></p>
+            <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length === 0" disabled>Resolve</button>
+            <button class="buttonStyle" *ngIf="focusTicket.isOpen && resolution.trim().length !== 0" (click)="updateResolution(focusTicket.id, focusTicket)">Resolve</button>
             <button class="buttonStyle" *ngIf="!focusTicket.isOpen" (click)="deleteTicket(focusTicket.id)">Delete</button>
-        <button class="buttonStyle" *ngIf="!focusTicket.isOpen"
-            (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
-        <p> </p>
-        <br>
+            <button class="buttonStyle" *ngIf="!focusTicket.isOpen" (click)="ticketService.swapTicketOpenStatus(focusTicket.id, focusTicket, true)">Reopen ticket</button>
+            <p> </p>
+            <br>
+        </div>
+    </div>
+    <p></p>
+    <p></p>
+
+    <div *ngIf="currentUser !== ''&& validatePerm() === 'Admin'" class="w3-card-4">
+        <header class="w3-container w3-light-grey">
+            <h3>Update Ticket</h3>
+        </header>
+
+        <div class="w3-container">
+            <p>New Title</p>
+            <input type="text" [(ngModel)]="title" required>
+            <br>
+            <p>New Description</p>
+            <input type="text" [(ngModel)]="problemDescription" required>
+            <button class="buttonStyle" *ngIf="title.trim() === '' || problemDescription.trim() === ''" disabled>Update ticket</button>
+            <button class="buttonStyle" *ngIf="title.trim() !== '' && problemDescription.trim() !== ''" (click)="updateTicket(focusTicket.id, focusTicket)">Update ticket</button>
+            <p></p>
+        </div>
     </div>
 </div>
