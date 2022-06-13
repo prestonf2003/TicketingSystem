@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-submit-ticket',
   templateUrl: './submit-ticket.component.html',
@@ -13,14 +13,12 @@ export class SubmitTicketComponent implements OnInit {
   title: string = "";
   problemDescription: string = "";
   
-  constructor( public ticketService: TicketService ) { }
+  constructor( public ticketService: TicketService, private router: Router ) { }
 
   createTicket(): void {
-    let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", "", true, this.problemDescription);
+    let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", "", true, this.problemDescription, undefined!, undefined!);
 
-    this.ticketService.createTicket(newTicket).subscribe();
-    this.title = "";
-    this.problemDescription = "";
+    this.ticketService.createTicket(newTicket).subscribe( () => this.router.navigateByUrl(``)); // This sends us back to the homepage, the big list of all tickets
   }
 
   ngOnInit(): void { // We call this to update page when user clicks login/out.

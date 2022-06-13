@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { Ticket } from '../ticket';
 import { TicketService } from '../ticket.service';
 import { Favorite } from '../favorite';
@@ -16,13 +16,12 @@ export class TodoDisplayComponent implements OnInit {
   newFavorite: Favorite = new Favorite(-1, "user here", -1);
   searchTerm: string = "";
   userID: string = "";
-  grabbedTicket: Ticket = new Ticket (0,"","","","",false,"");
+  timeBetweenOpenClose: number = -1;
   
-
   constructor( public ticketService: TicketService, private router: Router ) {
     this.showAllTickets();
     this.showAllFavorites();
-   }
+  }
 
   showAllTickets(): void {
     this.ticketService.showAllTickets().subscribe((allTickets) => {
@@ -30,14 +29,14 @@ export class TodoDisplayComponent implements OnInit {
     });
   }
 
-  showAllFavorites(): void {
-    this.ticketService.showFavorites().subscribe((allFavories) => {
+  showAllFavorites(): void { // This could possibly be bettered by instead filtering allFavorites for favorites done by currentUser.
+    this.ticketService.showFavorites().subscribe((allFavories) => { // that would allow us to search through a smaller array and not need to constantly call showAllFavorites.
       this.favorites = allFavories;
     });
   }
 
   createFavorite(ticketID: number): void {
-    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID);
+    this.newFavorite = new Favorite (undefined!, this.ticketService.currentUser, ticketID); // undefined! is to avoid a type error, when the DB gets the request, it inserts its own pkId.
 
     this.ticketService.createFavorite(this.newFavorite).subscribe(() => {
       this.showAllFavorites(); // To update the new favorite with the correct pkId.
@@ -55,8 +54,8 @@ export class TodoDisplayComponent implements OnInit {
     });
   }
 
-  isFavorited(ticketID: number): boolean {
-    for (let i = 0; i < this.favorites.length; i++) {
+  isFavorited(ticketID: number): boolean { // used to tell if the current user favorited a ticket.
+    for (let i = 0; i < this.favorites.length; i++) { // iterates through all favorites in the db, and returns true if a ticket is favorited and it's favorited by the current user.
       if (this.favorites[i].id === ticketID && this.favorites[i].userId === this.currentUser) {
         return true;
       }
@@ -102,25 +101,12 @@ export class TodoDisplayComponent implements OnInit {
     this.searchedTickets = newSearched;
   }
 
-  swapTicketOpenStatus(id: number, ticket: Ticket, openStatus: boolean): void {
-    ticket.isOpen = openStatus;
-    
-    if (openStatus === false) {
-      ticket.resolvedUserId = this.currentUser;
-    }
-    else {
-      ticket.resolvedUserId = "";
-    }
-    
-    this.ticketService.updateTicket(id, ticket).subscribe();
-  }
-
   deleteTicket(id: number) {
     let toDelete: Ticket = this.searchedTickets.find(ticket =>
       ticket.id === id
     )!;
 
-    this.ticketService.deleteTicket(id).subscribe(() =>{
+    this.ticketService.deleteTicket(id).subscribe(() => {
       this.searchedTickets.splice(this.searchedTickets.indexOf(toDelete), 1);
     });
   }
@@ -130,17 +116,88 @@ export class TodoDisplayComponent implements OnInit {
     this.userID = "";
   }
 
-  getTicket(ticket: Ticket){
+  getTicket(ticket: Ticket) { 
+    // We use this to pass ticket to our Ticket Service and redirect to ticket-view, which pulls the passed ticket down from ticket service to display data.
     this.ticketService.ticket = ticket;
     this.router.navigateByUrl(`/ticket-view`);
   }
-  
-  resolveTicket(id: number, ticket: Ticket, resolution: string): void {
-    if(ticket.isOpen === true){
-      this.ticketService.addResolution(id, ticket, resolution).subscribe();
+
+  timeBetween(ticket: Ticket): string {
+    let timeString: string = "";
+    
+    if (ticket.closeDate !== null) {
+      this.timeBetweenOpenClose = new Date(ticket.closeDate).getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between dates
     }
-    else{
-      ticket.resolution = "This Ticket has not been resolved yet.";
+    else  {
+      this.timeBetweenOpenClose = new Date().getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between now and the open date.
     }
+    
+    if (this.timeBetweenOpenClose/(1000*60*60*24) >= 1) { // adds days to the string and formats
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) + " day";
+      
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) >= 2) { // checks if day should be plural
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60*60*24; // converts to remaining hours
+
+      if (this.timeBetweenOpenClose >= 1000) { // checks if there's more data to add. Since we don't care for ms, we check for any data greater than or equal to 1 second.
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
+    }
+    
+    if (this.timeBetweenOpenClose/(1000*60*60) >= 1) { // adds hours to the string and formats
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60)) + " hour";
+    
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60*60)) >= 2) {
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60*60 // to remaining minutes
+      
+      if (this.timeBetweenOpenClose >= 1000) {
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
+    }
+
+    if (this.timeBetweenOpenClose/(1000*60) >= 1) { // adds minutes to the string and formats
+      timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60)) + " minute";
+      
+      if(Math.trunc(this.timeBetweenOpenClose/(1000*60)) >= 2) {
+        timeString += "s";
+      }
+
+      this.timeBetweenOpenClose %= 1000*60; // to remaining seconds
+
+      if (this.timeBetweenOpenClose >= 1000) {
+        timeString += ", ";
+      }
+      else {
+        timeString += ".";
+      }
+    }
+
+    if (this.timeBetweenOpenClose/1000 >= 1) { // adds seconds to the string and formats
+      timeString += Math.trunc(this.timeBetweenOpenClose/1000) + " second"; 
+      
+      if(Math.trunc(this.timeBetweenOpenClose/1000) >= 2) { // we don't go past seconds, so we only need to format
+        timeString += "s.";
+      }
+      else {
+        timeString += ".";
+      }
+    }
+
+    if (timeString === "") { // Sometimes after submitting a ticket the page can load before 1 second passes, so not would display for the "Opened for: " row.
+      return "0 seconds."; // For that case we want to show something, so we show this.
+    }
+
+    return timeString;
   }
 }
