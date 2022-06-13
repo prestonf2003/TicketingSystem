@@ -132,6 +132,7 @@ export class TodoDisplayComponent implements OnInit {
     }
 
     this.timeBetweenOpenClose = Math.trunc(this.timeBetweenOpenClose * 1000)/1000; // This deletes the millisecond data, which we don't use and could screw up result.
+    // Since we don't look at milliseconds 2 days and 1 millisecond would appear as "2 days," instead of "2 days."
     
     if (this.timeBetweenOpenClose/(1000*60*60*24) >= 1) {
       timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) + " day";
@@ -142,7 +143,7 @@ export class TodoDisplayComponent implements OnInit {
 
       this.timeBetweenOpenClose %= 1000*60*60*24; // converts to remaining hours
 
-      if (this.timeBetweenOpenClose > 0) { // checks if there's more data to add (TODO: 1 day and 1 millisecond would screw this up)
+      if (this.timeBetweenOpenClose >= 1000) { // checks if there's more data to add. Since we don't care for ms, we check for any data greater than or equal to 1 second.
         timeString += ", ";
       }
       else {
@@ -159,7 +160,7 @@ export class TodoDisplayComponent implements OnInit {
 
       this.timeBetweenOpenClose %= 1000*60*60 // to remaining minutes
       
-      if (this.timeBetweenOpenClose > 0) {
+      if (this.timeBetweenOpenClose >= 1000) {
         timeString += ", ";
       }
       else {
@@ -176,7 +177,7 @@ export class TodoDisplayComponent implements OnInit {
 
       this.timeBetweenOpenClose %= 1000*60; // to remaining seconds
 
-      if (this.timeBetweenOpenClose > 0) {
+      if (this.timeBetweenOpenClose >= 1000) {
         timeString += ", ";
       }
       else {
@@ -184,8 +185,8 @@ export class TodoDisplayComponent implements OnInit {
       }
     }
 
-    if (this.timeBetweenOpenClose >= 1) {
-      timeString += Math.trunc(this.timeBetweenOpenClose/1000) + " second"; // we don't go past seconds
+    if (this.timeBetweenOpenClose/1000 >= 1) {
+      timeString += Math.trunc(this.timeBetweenOpenClose/1000) + " second"; // we don't go past secondsz
       
       if(Math.trunc(this.timeBetweenOpenClose/1000) >= 2) {
         timeString += "s.";
