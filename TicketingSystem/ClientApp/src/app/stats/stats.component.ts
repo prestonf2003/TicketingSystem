@@ -25,13 +25,13 @@ export class StatsComponent implements OnInit {
     });
   }
 
-  getResolvedUserIds(): void {
-    let emptyArray: any[][] = [["", -1]]; // It's not empty, but ts gets mad if we don't have something.
-    this.allResolvedUserIdsAndStats = emptyArray; // We need to empty this array and 0 openTicketCount or it starts over-counting everything.
+  getResolvedUserIds(): void { // a potential downside of this is that it doesn't show data for ALL users, only the ones who have resolved a ticket
+    this.allResolvedUserIdsAndStats = [["", -1]]; // we need to empty this array and 0 openTicketCount or it starts over-counting everything
     this.openTicketCount = 0;
 
     let alphabetSortInput: any = document.getElementById("alphabetSort");
     let greatestToLeastSortInput: any = document.getElementById("greatestToLeastSort");
+    let leastToGreatestSortInput: any = document.getElementById("leastToGreatestSort");
 
     this.allTickets.forEach(ticket => {
       if (ticket.resolvedUserId === '') { // Counts the tickets that are still open.
@@ -58,6 +58,10 @@ export class StatsComponent implements OnInit {
     if (greatestToLeastSortInput.checked) {
       this.sortGreatestToLeast();
     }
+
+    if (leastToGreatestSortInput.checked) {
+      this.sortLeastToGreatest();
+    }
   }
 
   sortGreatestToLeast(): void {
@@ -79,7 +83,12 @@ export class StatsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  sortLeastToGreatest(): void {
+    this.sortGreatestToLeast();
+    this.allResolvedUserIdsAndStats.reverse(); // we reverse the greatesttoleast sort to get leasttogreatest
+  }
+
+  ngOnInit(): void { // We call this to update page when user clicks login/out.
     this.currentUser= this.ticketService.currentUser;
     this.userID = "";
   }

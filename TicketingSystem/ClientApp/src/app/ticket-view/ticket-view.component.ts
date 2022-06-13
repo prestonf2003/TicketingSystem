@@ -18,7 +18,7 @@ export class TicketViewComponent implements OnInit {
   currentUser: string = this.ticketService.currentUser;
   resolution: string = this.focusTicket.resolution;
   title: string = "";
-  problemDescription = "";
+  problemDescription: string = "";
   Users: UserPerm[] = [];
 
   constructor(public ticketService: TicketService, private router: Router, public userService: UserPermService) { 
@@ -43,7 +43,7 @@ export class TicketViewComponent implements OnInit {
   }
 
   deleteTicket(id: number) {
-    this.ticketService.deleteTicket(id).subscribe(() => this.router.navigateByUrl(``));
+    this.ticketService.deleteTicket(id).subscribe(() => this.router.navigateByUrl(``)); // sends us back to the homepage, the page with all the tickets displayed.
   }
 
   updateTicket(id: number, ticket: Ticket){
@@ -51,23 +51,21 @@ export class TicketViewComponent implements OnInit {
   ticket.problemDescription = this.problemDescription;
   this.ticketService.updateTicket(id, ticket).subscribe();
   }
+
   showAllUsers(): void {
     this.userService.showAllUsers().subscribe(
       (result) => {this.Users = result}
     )
   }
 
-  validatePerm(): string {
+  validatePerm(): string { // searches through array of users and updates our user perm service with their info
     for (let i = 0; i < this.Users.length; i++) {
       if(this.Users[i].username === this.currentUser){
         this.userService.UserNow.username = this.currentUser;
         this.userService.UserNow.accessLevel = this.Users[i].accessLevel;
-        console.log(this.userService.UserNow.username);
-        console.log(this.userService.UserNow.accessLevel);
       }
     }
     return this.userService.UserNow.accessLevel;
 
     }
-
 }

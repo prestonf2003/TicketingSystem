@@ -5,11 +5,14 @@
         <p>
             Open tickets: {{openTicketCount}}
             <br>
-            <input type="radio" id="alphabetSort" name="sortOption" (click)="getResolvedUserIds()">
+            <input type="radio" id="alphabetSort" name="sortOption" (click)="getResolvedUserIds()" checked>
             <label for="alphabetSort">Alphabetical</label>
             <br>
             <input type="radio" id="greatestToLeastSort" name="sortOption" (click)="getResolvedUserIds()">
             <label for="greatestToLeastSort">Greatest to least</label>
+            <br>
+            <input type="radio" id="leastToGreatestSort" name="sortOption" (click)="getResolvedUserIds()">
+            <label for="greatestToLeastSort">Least to greatest</label>
         </p>
     </header>
     

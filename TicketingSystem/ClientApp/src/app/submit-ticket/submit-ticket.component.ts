@@ -18,9 +18,7 @@ export class SubmitTicketComponent implements OnInit {
   createTicket(): void {
     let newTicket: Ticket = new Ticket(undefined!, this.currentUser, this.title, "", "", true, this.problemDescription, undefined!, undefined!);
 
-    this.ticketService.createTicket(newTicket).subscribe( () => this.router.navigateByUrl(``));
-    this.title = "";
-    this.problemDescription = "";
+    this.ticketService.createTicket(newTicket).subscribe( () => this.router.navigateByUrl(``)); // This sends us back to the homepage, the big list of all tickets
   }
 
   ngOnInit(): void { // We call this to update page when user clicks login/out.
