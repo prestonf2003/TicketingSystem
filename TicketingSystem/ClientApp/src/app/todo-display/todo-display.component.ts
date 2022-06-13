@@ -130,9 +130,6 @@ export class TodoDisplayComponent implements OnInit {
     else  {
       this.timeBetweenOpenClose = new Date().getTime() - new Date(ticket.openDate).getTime(); // gives milliseconds between now and the open date.
     }
-
-    this.timeBetweenOpenClose = Math.trunc(this.timeBetweenOpenClose * 1000)/1000; // This deletes the millisecond data, which we don't use and could screw up result.
-    // Since we don't look at milliseconds 2 days and 1 millisecond would appear as "2 days," instead of "2 days."
     
     if (this.timeBetweenOpenClose/(1000*60*60*24) >= 1) {
       timeString += Math.trunc(this.timeBetweenOpenClose/(1000*60*60*24)) + " day";
